@@ -93,10 +93,10 @@ class Main_Scene extends Scene_Component {
 
   init_objects(graphics_state, model_transform) {
     this.ground = new Ground(this.context, graphics_state, model_transform, this.stack);
-    this.ground.addStrip();
-    this.ground.addStrip();
-    this.ground.addStrip();
-    this.ground.addStrip();
+    this.ground.addStrip('grass');
+    this.ground.addStrip('grass');
+    this.ground.addStrip('grass');
+    this.ground.addStrip('grass');
   }
 
   update_objects() {

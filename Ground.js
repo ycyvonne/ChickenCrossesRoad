@@ -56,8 +56,24 @@ class Ground {
 		}
 	}
 
-	addStrip() {
-		let strip = new Grass_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
+	addStrip(type) {
+
+		let strip = null;
+
+		switch(type) {
+			case 'grass': 
+				strip = new Grass_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
+				break;
+			case 'street':
+				strip = new Street_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
+				break;
+			case 'water':
+				strip = new Water_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
+				break;
+			default:
+				strip = new Grass_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
+		}
+
 		this.strips.push(strip);
 		this.currentStripId++;
 	}
@@ -92,9 +108,7 @@ class Ground_Strip extends Basic_Component {
 		this.gs = gs;
 		this.mt = mt;
 		this.stack = stack;
-
 		this.h = 0.2;
-		this.w = 1;
 		this.l = 20;
 	}
 
@@ -109,6 +123,7 @@ class Ground_Strip extends Basic_Component {
 class Street_Strip extends Ground_Strip {
 	constructor(context, id, gs, mt, stack) {
 		super(context, id, gs, mt, stack);
+		this.w = 2;
 	}
 }
 
@@ -123,6 +138,7 @@ class Grass_Strip extends Ground_Strip {
 		super(context, id, gs, mt, stack);
 		this.treeNum = null;
 		this.treePos = null;
+		this.w = 1;
 	}
 
 	draw_tree(graphics_state, model_transform, options) {
@@ -162,7 +178,7 @@ class Grass_Strip extends Ground_Strip {
 		let graphics_state = this.gs;
 
 		model_transform = this.stack.peek();
-	    model_transform = model_transform.times(this.translate(0, this.h, -this.w + offset));
+	    model_transform = model_transform.times(this.translate(0, this.h, -this.w - offset));
 	    this.stack.push(model_transform);
 	    model_transform = model_transform.times(this.scale(this.l, this.h, this.w));
 	    this.shapes.box.draw(graphics_state, model_transform, this.green);
