@@ -45,9 +45,12 @@ class Ground {
 
 		this.currentStripId = 0;
 		this.strips = [];
+
+		this.base = new Ground_Base(context, graphics_state, model_transform, stack);
 	}
 
 	draw() {
+		this.base.draw();
 		for (let strip of this.strips) {
 			strip.draw();
 		}
@@ -57,6 +60,28 @@ class Ground {
 		let strip = new Grass_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
 		this.strips.push(strip);
 		this.currentStripId++;
+	}
+}
+
+class Ground_Base extends Basic_Component {
+	constructor(context, gs, mt, stack) {
+		super(context);
+		this.gs = gs;
+		this.mt = mt;
+		this.stack = stack;
+
+		this.h = 0.1;
+	}
+
+	draw() {
+		let model_transform = this.mt;
+		let graphics_state = this.gs;
+
+	    this.stack.push(model_transform);
+	    model_transform = model_transform
+	                        .times(this.translate(0, 0, -100))
+	                        .times(this.scale(20, this.h, 100))
+	    this.shapes.box.draw(graphics_state, model_transform, this.grey);
 	}
 }
 

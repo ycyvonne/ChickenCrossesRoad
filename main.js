@@ -114,9 +114,6 @@ class Main_Scene extends Scene_Component {
 
     Mat4.look_at(Vec.of(0, 20, 0), Vec.of(0,0,0), Vec.of(0, 1, 0));
 
-    // draw ground
-    this.draw_ground(graphics_state, model_transform);
-    
     if (!this.initDisplay) {
       this.init_objects(graphics_state, model_transform);
       this.initDisplay = true;
