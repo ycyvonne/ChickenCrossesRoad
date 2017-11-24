@@ -97,6 +97,7 @@ class Main_Scene extends Scene_Component {
     this.ground.addStrip('grass');
     this.ground.addStrip('grass');
     this.ground.addStrip('grass');
+    // this.ground.addStrip('street');
   }
 
   update_objects() {
