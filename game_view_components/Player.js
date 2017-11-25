@@ -94,7 +94,7 @@ class Player extends Basic_Component {
 	    // draw eyes
 	    model_transform = this.stack.peek();
 	    model_transform = model_transform
-	    					.times(this.translate(0, 0.5, 0))
+	    					.times(this.translate(0, 0.4, 0))
 	    					.times(this.scale(1.1, 0.1, 0.1));
 	    this.shapes.box.draw(graphics_state, model_transform, this.black);
 	    

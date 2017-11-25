@@ -15,6 +15,8 @@ load('game_view_components/Ground.js');
 load('game_view_components/Player.js');
 load('game_view_components/Interaction_Controller.js');
 
+load('Transition.js');
+
 /*********************************
  * Constants
  ***********************************/
@@ -52,7 +54,7 @@ class Main_Scene extends Scene_Component {
 
     Object.assign(
       context.globals.graphics_state, {
-        camera_transform: Mat4.translation([ 0,-10,-40 ]),
+        camera_transform: Mat4.translation([ 0, -20, -50 ]),
         projection_transform: Mat4.perspective( Math.PI/4, context.width/context.height, .1, 1000 )
       }
     );
@@ -115,6 +117,26 @@ class Main_Scene extends Scene_Component {
     this.ground.draw(this.t);
   }
 
+  getCameraZ() {
+    // handle camera transitions
+    if (!this.transition) {
+      this.transition = new Transition(this.player.curZ, this.player.curZ, 1, this.t);
+    }
+
+    let cameraTransitionX = this.transition.value(this.t);
+
+    if (cameraTransitionX != this.player.curZ && !this.transition.isTransitioning) {
+      this.transition = new Transition(cameraTransitionX, this.player.curZ, 200, this.t);
+    }
+    else if(cameraTransitionX != this.player.curZ && this.transition.isTransitioning) {
+      this.transition.updateEnd(this.player.curZ);
+    }
+    else if (cameraTransitionX == this.player.curZ) {
+      this.transition.isTransitioning = false;
+    }
+    return -this.transition.value(this.t) * 2;
+  }
+
   /**
    * display function
    */
@@ -124,13 +146,13 @@ class Main_Scene extends Scene_Component {
 
     let model_transform = Mat4.identity();
 
-    Mat4.look_at(Vec.of(0, 20, 0), Vec.of(0,0,0), Vec.of(0, 1, 0));
-
     if (!this.initDisplay) {
       this.init_objects(graphics_state, model_transform);
       this.initDisplay = true;
     }
 
+    let cameraZ = this.getCameraZ();
+    graphics_state.camera_transform = Mat4.look_at(Vec.of(0, 30, 10 + cameraZ), Vec.of(0, 0, cameraZ), Vec.of(0, 1, 0));
     this.update_objects();
   }
 

@@ -10,37 +10,37 @@
         contexts[ "main_canvas" ] = new Canvas_Manager( "main_canvas", Color.of( 0,0,0,1 ), scenes );   // Manage the WebGL canvas.  Second parameter sets background color.
         for( let c in contexts ) contexts[ c ].render();     // Call render() for each WebGL context on this page.  Then render() will re-queue itself for more calls.
         
-        Code_Manager.display_code( eval( scenes[0] ) );                                  // Display the code for our demo on the page, starting with the first scene in the list.
-        for( let list of [ core_dependencies, all_dependencies ] )
-        document.querySelector( "#class_list" ).rows[2].appendChild( Object.assign( document.createElement( "td" ), { 
-          innerHTML: list.reduce( (acc, x) => acc += "<a href='javascript:void(0);' onclick='Code_Manager.display_code(" + x + ")'>" + x + "</a><br>", "" ) } ) );        
-        document.getElementsByName( "main_demo_link" )[0].innerHTML = "<a href='javascript:void(0);' onclick='Code_Manager.display_code(" + scenes[0] + ")'>" + scenes[0] + "</a><br>";
-        document.querySelector("#code_display").innerHTML = "Below is the code for the demo that's running:<br>&nbsp;<br>" + document.querySelector("#code_display").innerHTML;             
+        // Code_Manager.display_code( eval( scenes[0] ) );                                  // Display the code for our demo on the page, starting with the first scene in the list.
+        // for( let list of [ core_dependencies, all_dependencies ] )
+        // document.querySelector( "#class_list" ).rows[2].appendChild( Object.assign( document.createElement( "td" ), { 
+          // innerHTML: list.reduce( (acc, x) => acc += "<a href='javascript:void(0);' onclick='Code_Manager.display_code(" + x + ")'>" + x + "</a><br>", "" ) } ) );        
+        // document.getElementsByName( "main_demo_link" )[0].innerHTML = "<a href='javascript:void(0);' onclick='Code_Manager.display_code(" + scenes[0] + ")'>" + scenes[0] + "</a><br>";
+        // document.querySelector("#code_display").innerHTML = "Below is the code for the demo that's running:<br>&nbsp;<br>" + document.querySelector("#code_display").innerHTML;             
       }
       
-      document.querySelector("#edit_button").addEventListener('click', () => {
-        code_panel.style.display=class_list.style.display='none'; new_demo_source_code.style.display='block'; 
-        document.getElementsByName( 'new_demo_code' )[0].value=code_display.dataset.displayed.toString() } )
-      const form = document.forms.namedItem("new_demo_source_code");
-      form.addEventListener('submit', function(event) 
-        { if( document.getElementsByName( "finished" )[0].checked )
-            alert( "Your demo will be submitted.  If approved, you will start being asked for a password to make any further updates to it.  This password "
-                 + "will appear right now, below the submit button, and then (assuming submission worked) it will never appear again.  Write it down." );
-          var xhr = new XMLHttpRequest();
-          xhr.open("POST", "/submit-demo?Unapproved", true);
-          xhr.responseType = "json";
-          xhr.onload = function(event) 
-          { if (xhr.status != 200) { document.querySelector("#submit_result").textContent = "Error " + xhr.status + " when trying to upload."; return }
-            document.querySelector("#submit_result").textContent = this.response.message;
-            // if( this.response.hide_finished_checkbox ) { document.getElementsByName( "finished" )[0].checked = false; expert_panel.style.display = "none" }
-            if( this.response.show_password  ) document.getElementsByName( "password" )[0] .style.display = "inline";
-            if( this.response.show_overwrite ) document.querySelector( "#overwrite_panel" ).style.display = "inline";
-          };
-          xhr.setRequestHeader("Content-Type", "application/json");
-          xhr.send( JSON.stringify( Array.from( form.elements ).reduce( ( accum, elem ) => 
-            { if( elem.value && !( ['checkbox', 'radio'].includes(elem.type) && !elem.checked ) ) accum[elem.name] = elem.value; return accum }, {} ) ) );
-          event.preventDefault();
-        }, false);      
+      // document.querySelector("#edit_button").addEventListener('click', () => {
+        // code_panel.style.display=class_list.style.display='none'; new_demo_source_code.style.display='block'; 
+        // document.getElementsByName( 'new_demo_code' )[0].value=code_display.dataset.displayed.toString() } )
+      // const form = document.forms.namedItem("new_demo_source_code");
+      // form.addEventListener('submit', function(event) 
+      //   { if( document.getElementsByName( "finished" )[0].checked )
+      //       alert( "Your demo will be submitted.  If approved, you will start being asked for a password to make any further updates to it.  This password "
+      //            + "will appear right now, below the submit button, and then (assuming submission worked) it will never appear again.  Write it down." );
+      //     var xhr = new XMLHttpRequest();
+      //     xhr.open("POST", "/submit-demo?Unapproved", true);
+      //     xhr.responseType = "json";
+      //     xhr.onload = function(event) 
+      //     { if (xhr.status != 200) { document.querySelector("#submit_result").textContent = "Error " + xhr.status + " when trying to upload."; return }
+      //       document.querySelector("#submit_result").textContent = this.response.message;
+      //       // if( this.response.hide_finished_checkbox ) { document.getElementsByName( "finished" )[0].checked = false; expert_panel.style.display = "none" }
+      //       if( this.response.show_password  ) document.getElementsByName( "password" )[0] .style.display = "inline";
+      //       if( this.response.show_overwrite ) document.querySelector( "#overwrite_panel" ).style.display = "inline";
+      //     };
+      //     xhr.setRequestHeader("Content-Type", "application/json");
+      //     xhr.send( JSON.stringify( Array.from( form.elements ).reduce( ( accum, elem ) => 
+      //       { if( elem.value && !( ['checkbox', 'radio'].includes(elem.type) && !elem.checked ) ) accum[elem.name] = elem.value; return accum }, {} ) ) );
+      //     event.preventDefault();
+      //   }, false);      
     }
 
 // Below is the demo you will see when you run the program!    
