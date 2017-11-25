@@ -1,0 +1,94 @@
+
+class Grass_Strip extends Ground_Strip {
+	constructor(context, id, gs, mt, stack) {
+		super(context, id, gs, mt, stack);
+		this.type = 'grass';
+		this.treeNum = null;
+		this.trees = null;
+		this.w = 1;
+	}
+
+	draw_tree(graphics_state, model_transform, options) {
+	    const tree_trunk_th = 0.5;
+
+	    // tree trunk
+	    model_transform = model_transform.times(this.translate(20 * options.position_x, tree_trunk_th, 0));
+	    this.stack.push(model_transform);
+	    model_transform = model_transform.times(this.scale(tree_trunk_th, tree_trunk_th, tree_trunk_th));
+	    this.shapes.box.draw(graphics_state, model_transform, this.brown);
+
+	    // tree top
+	    model_transform = this.stack.pop();
+	    model_transform = model_transform
+	                        .times(this.translate(0, options.height + tree_trunk_th, 0))
+	                        .times(this.scale(1, options.height, 1));
+	    this.shapes.box.draw(graphics_state, model_transform, this.green);
+	}
+
+	initData() {
+		if (!this.treeNum) {
+			this.treeNum = this.getRandom(0, 2, 0);
+		}
+
+		if (!this.trees) {
+			this.trees = [];
+			for (let i = 0; i < this.treeNum; i++) {
+
+				let randomX = this.getRandom(-1, 1, 1);
+				this.trees.push({
+					pos_x: randomX,
+					height: this.getRandom(1, 2, 0)
+				})
+				this.o.push(randomX * 10);
+			}
+		}
+	}
+
+	draw() {
+		this.initData();
+
+		const offset = this.id * 2;
+		let model_transform = this.mt;
+		let graphics_state = this.gs;
+
+		model_transform = this.stack.peek();
+	    model_transform = model_transform.times(this.translate(0, this.h, -this.w - offset));
+	    this.stack.push(model_transform);
+	    model_transform = model_transform.times(this.scale(this.l, this.h, this.w));
+	    this.shapes.box.draw(graphics_state, model_transform, this.green);
+	    model_transform = this.stack.pop();
+
+	    for (let tree of this.trees) {
+	    	this.draw_tree(graphics_state, model_transform, {
+		      position_x: tree.pos_x,
+		      height: tree.height
+		    });
+	    }
+	    
+	}
+}
+
+class Grass_Strip_Start extends Grass_Strip {
+
+	constructor(context, id, gs, mt, stack) {
+		super(context, id, gs, mt, stack);
+	}
+
+	get obstacles() {
+		return [];
+	}
+
+	draw() {
+		const offset = this.id * 2;
+		let model_transform = this.mt;
+		let graphics_state = this.gs;
+
+		model_transform = this.stack.peek();
+	    model_transform = model_transform.times(this.translate(0, this.h, -this.w - offset));
+	    this.stack.push(model_transform);
+	    model_transform = model_transform.times(this.scale(this.l, this.h, this.w));
+	    this.shapes.box.draw(graphics_state, model_transform, this.green);
+	    model_transform = this.stack.pop();
+	}
+
+}

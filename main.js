@@ -12,7 +12,14 @@ load('game_dependencies/Basic_Component.js');
 load('game_dependencies/Transition.js');
 
 load('game_view_components/Car.js');
-load('game_view_components/Ground.js');
+
+load('game_view_components/terrain/Ground_Base.js');
+load('game_view_components/terrain/Ground_Strip.js');
+load('game_view_components/terrain/Street_Strip.js');
+load('game_view_components/terrain/Water_Strip.js');
+load('game_view_components/terrain/Grass_Strip.js');
+load('game_view_components/terrain/Ground.js');
+
 load('game_view_components/Player.js');
 load('game_view_components/Interaction_Controller.js');
 
