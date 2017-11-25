@@ -10,6 +10,7 @@ class Ground {
 		this.strips = [];
 
 		this.base = new Ground_Base(context, graphics_state, model_transform, stack, this.l);
+		this.addStrip('start');
 	}
 
 	draw(time) {
@@ -32,6 +33,10 @@ class Ground {
 		let strip = null;
 
 		switch(type) {
+			case 'start':
+				strip = new Grass_Strip_Start(this.context, this.currentStripId, this.gs, this.mt, this.stack);
+				this.currentStripId++;
+				break;
 			case 'grass': 
 				strip = new Grass_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
 				this.currentStripId++;
@@ -261,4 +266,29 @@ class Grass_Strip extends Ground_Strip {
 	    }
 	    
 	}
+}
+
+class Grass_Strip_Start extends Grass_Strip {
+
+	constructor(context, id, gs, mt, stack) {
+		super(context, id, gs, mt, stack);
+	}
+
+	get obstacles() {
+		return [];
+	}
+
+	draw() {
+		const offset = this.id * 2;
+		let model_transform = this.mt;
+		let graphics_state = this.gs;
+
+		model_transform = this.stack.peek();
+	    model_transform = model_transform.times(this.translate(0, this.h, -this.w - offset));
+	    this.stack.push(model_transform);
+	    model_transform = model_transform.times(this.scale(this.l, this.h, this.w));
+	    this.shapes.box.draw(graphics_state, model_transform, this.green);
+	    model_transform = this.stack.pop();
+	}
+
 }
