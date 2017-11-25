@@ -112,6 +112,11 @@ class Main_Scene extends Scene_Component {
     this.ground.addStrip('grass');
     this.ground.addStrip('grass');
     this.ground.addStrip('street');
+    this.ground.addStrip('street');
+    this.ground.addStrip('street');
+    this.ground.addStrip('grass');
+    this.ground.addStrip('grass');
+    this.ground.addStrip('grass');
     
 
     this.interaction = new Interaction_Controller(this.player, this.ground);
