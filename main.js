@@ -9,13 +9,13 @@ function load(script) {
 load('game_dependencies/Shapes.js');
 load('game_dependencies/Graphics_Stack.js');
 load('game_dependencies/Basic_Component.js');
+load('game_dependencies/Transition.js');
 
 load('game_view_components/Car.js');
 load('game_view_components/Ground.js');
 load('game_view_components/Player.js');
 load('game_view_components/Interaction_Controller.js');
 
-load('Transition.js');
 
 /*********************************
  * Constants
@@ -123,15 +123,15 @@ class Main_Scene extends Scene_Component {
       this.transition = new Transition(this.player.curZ, this.player.curZ, 1, this.t);
     }
 
-    let cameraTransitionX = this.transition.value(this.t);
+    let cameraTransitionZ = this.transition.value(this.t);
 
-    if (cameraTransitionX != this.player.curZ && !this.transition.isTransitioning) {
-      this.transition = new Transition(cameraTransitionX, this.player.curZ, 200, this.t);
+    if (cameraTransitionZ != this.player.curZ && !this.transition.isTransitioning) {
+      this.transition = new Transition(cameraTransitionZ, this.player.curZ, 250, this.t);
     }
-    else if(cameraTransitionX != this.player.curZ && this.transition.isTransitioning) {
+    else if(cameraTransitionZ != this.player.curZ && this.transition.isTransitioning) {
       this.transition.updateEnd(this.player.curZ);
     }
-    else if (cameraTransitionX == this.player.curZ) {
+    else if (cameraTransitionZ == this.player.curZ) {
       this.transition.isTransitioning = false;
     }
     return -this.transition.value(this.t) * 2;
