@@ -9,6 +9,7 @@ function load(script) {
 load('shapes.js')
 load('Graphics_Stack.js')
 load('Ground.js')
+load('Player.js')
 
 /*********************************
  * Constants
@@ -76,7 +77,7 @@ class Main_Scene extends Scene_Component {
    */
   draw_lights(graphics_state) {
     graphics_state.lights = [
-      new Light( Vec.of( 1,1,0, 0 ).normalized(), Color.of(  0.5, 0.5, 0.5, 1 ), 100000000 ),
+      new Light( Vec.of( 1,1,2, 0 ).normalized(), Color.of(  0.5, 0.5, 0.5, 1 ), 100000000 ),
       new Light( Vec.of( 0,1,0, 0 ).normalized(), Color.of( 0.5,  0.5, 0.5, 1 ), 100000000 )
     ];
   }
@@ -92,7 +93,10 @@ class Main_Scene extends Scene_Component {
   }
 
   init_objects(graphics_state, model_transform) {
+    
     this.ground = new Ground(this.context, graphics_state, model_transform, this.stack);
+    this.player = new Player(this.context, graphics_state, model_transform, this.stack);
+
     this.ground.addStrip('grass');
     this.ground.addStrip('grass');
     this.ground.addStrip('grass');
@@ -101,7 +105,8 @@ class Main_Scene extends Scene_Component {
   }
 
   update_objects() {
-    this.ground.draw();
+    this.player.draw(this.t);
+    this.ground.draw(this.t);
   }
 
   /**
@@ -109,9 +114,9 @@ class Main_Scene extends Scene_Component {
    */
   display( graphics_state ) {
     this.draw_lights(graphics_state);
+    this.t = graphics_state.animation_time;
 
     let model_transform = Mat4.identity();
-    let t = graphics_state.animation_time / 1000;
 
     Mat4.look_at(Vec.of(0, 20, 0), Vec.of(0,0,0), Vec.of(0, 1, 0));
 
@@ -127,23 +132,24 @@ class Main_Scene extends Scene_Component {
    * This function of a scene sets up its keyboard shortcuts.
    */
   make_control_panel() {
+
     this.key_triggered_button("Go forward", "w", () => {
-      console.log('going forward')
+      this.player.goForward(this.t);
     }, "red");
     this.new_line();
 
     this.key_triggered_button("Go backward", "s", () => {
-      console.log('going backward')
+      this.player.goBackward(this.t);
     }, "red");
     this.new_line();
 
     this.key_triggered_button("Go right", "d", () => {
-      console.log('going right')
+      this.player.goRight(this.t);
     }, "red");
     this.new_line();
 
     this.key_triggered_button("Go left", "a", () => {
-      console.log('going left')
+      this.player.goLeft(this.t);
     }, "red");
     this.new_line();
 

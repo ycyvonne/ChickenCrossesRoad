@@ -310,10 +310,10 @@ class Movement_Controls extends Scene_Component    // A Scene_Component that our
     { const globals = this.globals;
       this.control_panel.innerHTML += "Click and drag the scene to <br> spin your viewpoint around it.<br>";
       this.key_triggered_button( "Up",     "space", function() { this.thrust[1] = -1 }, undefined, function() { this.thrust[1] = 0 } );
-      this.key_triggered_button( "Forward",    "w", function() { this.thrust[2] =  1 }, undefined, function() { this.thrust[2] = 0 } ); this.new_line();
-      this.key_triggered_button( "Left",       "a", function() { this.thrust[0] =  1 }, undefined, function() { this.thrust[0] = 0 } );
-      this.key_triggered_button( "Back",       "s", function() { this.thrust[2] = -1 }, undefined, function() { this.thrust[2] = 0 } );
-      this.key_triggered_button( "Right",      "d", function() { this.thrust[0] = -1 }, undefined, function() { this.thrust[0] = 0 } ); this.new_line();
+      // this.key_triggered_button( "Forward",    "w", function() { this.thrust[2] =  1 }, undefined, function() { this.thrust[2] = 0 } ); this.new_line();
+      // this.key_triggered_button( "Left",       "a", function() { this.thrust[0] =  1 }, undefined, function() { this.thrust[0] = 0 } );
+      // this.key_triggered_button( "Back",       "s", function() { this.thrust[2] = -1 }, undefined, function() { this.thrust[2] = 0 } );
+      // this.key_triggered_button( "Right",      "d", function() { this.thrust[0] = -1 }, undefined, function() { this.thrust[0] = 0 } ); this.new_line();
       this.key_triggered_button( "Down",       "z", function() { this.thrust[1] =  1 }, undefined, function() { this.thrust[1] = 0 } ); this.new_line();
       this.key_triggered_button( "Roll left",  ",", function() { this.roll      =  1 }, undefined, function() { this.roll      = 0 } );
       this.key_triggered_button( "Roll right", ".", function() { this.roll      = -1 }, undefined, function() { this.roll      = 0 } ); this.new_line();

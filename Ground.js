@@ -6,6 +6,8 @@ class Basic_Component extends Scene_Component {
 
 		Object.assign(
 	      this, { 
+	      	white:  context.get_instance( Phong_Model ).material( Color.of(  1,  1,  1,  1 ), .2, 1, .7, 40 ), 
+	      	black:  context.get_instance( Phong_Model ).material( Color.of(  0,  0,  0,  1 ), .2, 1, .7, 40 ), 
 	        yellow: context.get_instance( Phong_Model ).material( Color.of( .8, .8, .3,  1 ), .2, 1, .7, 40 ),  // Call material() on the Phong_Shader,
 	        grey:   context.get_instance( Phong_Model ).material( Color.of( .2, .2, .2,  2 ), .2, 1,  1, 40 ),  // which returns a special-made "material" 
 	        brown:  context.get_instance( Phong_Model ).material( Color.of( .2, .2, .05,  1 ), .2, 1,  1, 40 ),
@@ -33,6 +35,13 @@ class Basic_Component extends Scene_Component {
 			return random;
 		}
 	    return parseFloat(random.toFixed(roundTo));
+	}
+
+	/**
+	 * abstract method, must override
+	 */
+	draw() {
+		throw new Exception('Must override abstract method draw() in class Basic_Component');
 	}
 }
 
@@ -110,13 +119,6 @@ class Ground_Strip extends Basic_Component {
 		this.stack = stack;
 		this.h = 0.2;
 		this.l = 20;
-	}
-
-	/**
-	 * abstract method, must override
-	 */
-	draw() {
-		throw new Exception('Must override abstract method draw() in class Ground_Strip');
 	}
 }
 
