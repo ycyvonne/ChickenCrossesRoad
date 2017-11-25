@@ -51,6 +51,13 @@ class Ground {
 		}
 		return this.strips[stripId].obstacles;
 	}
+
+	getType(stripId) {
+		if (stripId < 0 || stripId > this.currentStripId) {
+			return '';
+		}
+		return this.strips[stripId].type;
+	}
 }
 
 class Ground_Base extends Basic_Component {
@@ -87,11 +94,16 @@ class Ground_Strip extends Basic_Component {
 		this.l = 21;
 		this.obstacles = [];
 	}
+
+	addInteraction(interaction) {
+		this.interaction = interaction;
+	}
 }
 
 class Street_Strip extends Ground_Strip {
 	constructor(context, id, gs, mt, stack) {
 		super(context, id, gs, mt, stack);
+		this.type = 'street';
 		this.cars = new Cars(context, gs, stack);
 		this.cars.addCar(0, {
 			street: 0
@@ -130,15 +142,29 @@ class Street_Strip extends Ground_Strip {
 class Water_Strip extends Ground_Strip {
 	constructor(context, id, gs, mt, stack) {
 		super(context, id, gs, mt, stack);
+		this.type = 'water';
+		this.w = 1;
+		this.h = 0.1;
 	}
 
-	draw() {
+	draw(time) {
+		const offset = this.id * 2;
+		let model_transform = this.mt;
+		let graphics_state = this.gs;
+
+		model_transform = this.stack.peek();
+	    model_transform = model_transform.times(this.translate(0, this.h, -this.w - offset));
+	    this.stack.push(model_transform);
+	    model_transform = model_transform.times(this.scale(this.l, this.h, this.w));
+	    this.shapes.box.draw(graphics_state, model_transform, this.blue);
+	    model_transform = this.stack.pop();
 	}
 }
 
 class Grass_Strip extends Ground_Strip {
 	constructor(context, id, gs, mt, stack) {
 		super(context, id, gs, mt, stack);
+		this.type = 'grass';
 		this.treeNum = null;
 		this.trees = null;
 		this.w = 1;

@@ -106,6 +106,9 @@ class Player extends Basic_Component {
 		this.rotateAngle = 0;
 		if (!this.interaction.collisionExists(0,1)) {
 			this.curZ += this.step;
+			if (this.interaction.playerOnWater()) {
+				console.log('water!')
+			}
 		}
 	}
 
@@ -114,6 +117,9 @@ class Player extends Basic_Component {
 		this.rotateAngle = 180;
 		if (!this.interaction.collisionExists(0,-1)) {
 			this.curZ -= this.step;
+			if (this.interaction.playerOnWater()) {
+				console.log('water!')
+			}
 		}
 	}
 
@@ -122,6 +128,9 @@ class Player extends Basic_Component {
 		this.rotateAngle = 90;
 		if (!this.interaction.collisionExists(-1, 0)) {
 			this.curX -= this.step;
+			if (this.interaction.playerOnWater()) {
+				console.log('water!')
+			}
 		}
 	}
 
@@ -130,6 +139,9 @@ class Player extends Basic_Component {
 		this.rotateAngle = 270;
 		if (!this.interaction.collisionExists(1, 0)) {
 			this.curX += this.step;
+			if (this.interaction.playerOnWater()) {
+				console.log('water!')
+			}
 		}
 	}
 

@@ -66,7 +66,11 @@ class Main_Scene extends Scene_Component {
         revolution_only: false
       }
     );
-    
+    this.gameInPlay = true;
+  }
+
+  gameOver() {
+    this.gameInPlay = false;
   }
 
   /**
@@ -89,6 +93,7 @@ class Main_Scene extends Scene_Component {
 
     this.ground.addStrip('grass');
     this.ground.addStrip('grass');
+    this.ground.addStrip('water');
     this.ground.addStrip('grass');
     this.ground.addStrip('grass');
     this.ground.addStrip('street');
@@ -102,7 +107,7 @@ class Main_Scene extends Scene_Component {
     this.ground.addStrip('grass');
     
 
-    this.interaction = new Interaction_Controller(this.player, this.ground);
+    this.interaction = new Interaction_Controller(this, this.player, this.ground);
   }
 
   update_objects() {
