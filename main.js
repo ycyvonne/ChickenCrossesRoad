@@ -6,10 +6,11 @@ function load(script) {
   document.write('<'+'script src="'+script+'" type="text/javascript"><' + '/script>');
 }
 
-load('shapes.js')
-load('Graphics_Stack.js')
-load('Ground.js')
-load('Player.js')
+load('shapes.js');
+load('Graphics_Stack.js');
+load('Ground.js');
+load('Player.js');
+load('Interaction_Controller.js');
 
 /*********************************
  * Constants
@@ -77,7 +78,7 @@ class Main_Scene extends Scene_Component {
    */
   draw_lights(graphics_state) {
     graphics_state.lights = [
-      new Light( Vec.of( 1,1,2, 0 ).normalized(), Color.of(  0.5, 0.5, 0.5, 1 ), 100000000 ),
+      new Light( Vec.of( 1,1,2, 0 ).normalized(), Color.of( 0.5, 0.5, 0.5,  1 ), 100000000 ),
       new Light( Vec.of( 0,1,0, 0 ).normalized(), Color.of( 0.5,  0.5, 0.5, 1 ), 100000000 )
     ];
   }
@@ -92,6 +93,9 @@ class Main_Scene extends Scene_Component {
     this.shapes.box.draw(graphics_state, model_transform, this.grey);
   }
 
+  /**
+   * init objects, called only once
+   */
   init_objects(graphics_state, model_transform) {
     
     this.ground = new Ground(this.context, graphics_state, model_transform, this.stack);
@@ -102,6 +106,8 @@ class Main_Scene extends Scene_Component {
     this.ground.addStrip('grass');
     this.ground.addStrip('grass');
     // this.ground.addStrip('street');
+
+    this.interaction = new Interaction_Controller(this.player, this.ground);
   }
 
   update_objects() {

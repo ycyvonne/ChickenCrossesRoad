@@ -6,14 +6,18 @@ class Player extends Basic_Component {
 		this.mt = mt;
 		this.stack = stack;
 
-		this.curX = 1;
+		this.curX = 0;
 		this.curZ = 1;
-		this.step = 2;
+		this.step = 1;
 		this.rotateAngle = 0;
 
 		this.lastJumpingTime = 0;
 		this.jumpDuration = 100;
 		this.isJumping = 0;
+	}
+
+	addInteraction(interaction) {
+		this.interaction = interaction;
 	}
 
 	drawWing(graphics_state, model_transform, orientation) {
@@ -40,14 +44,14 @@ class Player extends Basic_Component {
 				this.isJumping = 0;
 			}
 		}
-		model_transform = model_transform.times(this.translate(1, this.isJumping * 0.4, -0.2));
+		model_transform = model_transform.times(this.translate(0, this.isJumping * 0.4, 1));
 
 		// draw feet
 
 
 		// draw body
 	    model_transform = model_transform
-	    					.times(this.translate(this.curX, 0.6 + 0.2, -this.curZ))
+	    					.times(this.translate(this.curX * 2, 0.6 + 0.2, -this.curZ * 2))
 	    					.times(this.scale(1/1.6, 1/1.3, 1/1.6));
 
 	   	// handle rotations
@@ -99,26 +103,34 @@ class Player extends Basic_Component {
 
 	goForward(time) {
 		this.triggerJump(time);
-		this.curZ += this.step;
 		this.rotateAngle = 0;
+		if (!this.interaction.collisionExists(0,1)) {
+			this.curZ += this.step;
+		}
 	}
 
 	goBackward(time) {
 		this.triggerJump(time);
-		this.curZ -= this.step;
 		this.rotateAngle = 180;
+		if (!this.interaction.collisionExists(0,-1)) {
+			this.curZ -= this.step;
+		}
 	}
 
 	goLeft(time) {
 		this.triggerJump(time);
-		this.curX -= this.step;
 		this.rotateAngle = 90;
+		if (!this.interaction.collisionExists(-1, 0)) {
+			this.curX -= this.step;
+		}
 	}
 
 	goRight(time) {
 		this.triggerJump(time);
-		this.curX += this.step;
 		this.rotateAngle = 270;
+		if (!this.interaction.collisionExists(1, 0)) {
+			this.curX += this.step;
+		}
 	}
 
 }

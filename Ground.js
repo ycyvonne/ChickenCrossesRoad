@@ -51,11 +51,12 @@ class Ground {
 		this.gs = graphics_state;
 		this.mt = model_transform;
 		this.stack = stack;
+		this.l = 21;
 
 		this.currentStripId = 0;
 		this.strips = [];
 
-		this.base = new Ground_Base(context, graphics_state, model_transform, stack);
+		this.base = new Ground_Base(context, graphics_state, model_transform, stack, this.l);
 	}
 
 	draw() {
@@ -86,16 +87,24 @@ class Ground {
 		this.strips.push(strip);
 		this.currentStripId++;
 	}
+
+	getStripObstacles(stripId) {
+		if (stripId < 0 || stripId > this.currentStripId) {
+			return [];
+		}
+		return this.strips[stripId].obstacles;
+	}
 }
 
 class Ground_Base extends Basic_Component {
-	constructor(context, gs, mt, stack) {
+	constructor(context, gs, mt, stack, length) {
 		super(context);
 		this.gs = gs;
 		this.mt = mt;
 		this.stack = stack;
 
 		this.h = 0.1;
+		this.l = length;
 	}
 
 	draw() {
@@ -105,7 +114,7 @@ class Ground_Base extends Basic_Component {
 	    this.stack.push(model_transform);
 	    model_transform = model_transform
 	                        .times(this.translate(0, 0, -100))
-	                        .times(this.scale(20, this.h, 100))
+	                        .times(this.scale(this.l, this.h, 100))
 	    this.shapes.box.draw(graphics_state, model_transform, this.grey);
 	}
 }
@@ -118,7 +127,8 @@ class Ground_Strip extends Basic_Component {
 		this.mt = mt;
 		this.stack = stack;
 		this.h = 0.2;
-		this.l = 20;
+		this.l = 21;
+		this.obstacles = [];
 	}
 }
 
@@ -176,10 +186,13 @@ class Grass_Strip extends Ground_Strip {
 		if (!this.trees) {
 			this.trees = [];
 			for (let i = 0; i < this.treeNum; i++) {
+
+				let randomX = this.getRandom(-1, 1, 1);
 				this.trees.push({
-					pos_x: this.getRandom(-0.9, 0.9, 1),
+					pos_x: randomX,
 					height: this.getRandom(1, 2, 0)
 				})
+				this.obstacles.push(randomX * 10);
 			}
 		}
 	}
