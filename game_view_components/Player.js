@@ -7,7 +7,7 @@ class Player extends Basic_Component {
 		this.stack = stack;
 
 		this.curX = 0;
-		this.curZ = 1;
+		this.curZ = 7;
 		this.step = 1;
 		this.rotateAngle = 0;
 

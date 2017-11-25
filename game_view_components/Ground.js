@@ -11,6 +11,12 @@ class Ground {
 
 		this.base = new Ground_Base(context, graphics_state, model_transform, stack, this.l);
 		this.addStrip('start');
+		this.addStrip('start');
+		this.addStrip('start');
+		this.addStrip('start');
+		this.addStrip('start');
+		this.addStrip('start');
+		this.addStrip('start');
 	}
 
 	draw(time) {
