@@ -63,14 +63,7 @@ class Main_Scene extends Scene_Component {
         textures: [],
         gallery: false,
         patch_only: false,
-        revolution_only: false,
-        yellow: context.get_instance( Phong_Model ).material( Color.of( .8, .8, .3,  1 ), .2, 1, .7, 40 ),  // Call material() on the Phong_Shader,
-        grey:   context.get_instance( Phong_Model ).material( Color.of( .2, .2, .2,  2 ), .2, 1,  1, 40 ),  // which returns a special-made "material" 
-        brown:  context.get_instance( Phong_Model ).material( Color.of( .2, .2, .05,  1 ), .2, 1,  1, 40 ),
-        red:    context.get_instance( Phong_Model ).material( Color.of(  1,  0,  0, .9 ), .1, .7, 1, 40 ),  // (a JavaScript object)
-        green:  context.get_instance( Phong_Model ).material( Color.of( .25, .5,  0,  1 ), .1, .7, 1, 40 ),
-        blue:   context.get_instance( Phong_Model ).material( Color.of(  0,  0,  1, .8 ), .1, .7, 1, 40 ),
-        silver: context.get_instance( Phong_Model ).material( Color.of( .8, .8, .8,  1 ),  0,  1, 1, 40 )
+        revolution_only: false
       }
     );
     
@@ -84,16 +77,6 @@ class Main_Scene extends Scene_Component {
       new Light( Vec.of( 1,1,2, 0 ).normalized(), Color.of( 0.5, 0.5, 0.5,  1 ), 100000000 ),
       new Light( Vec.of( 0,1,0, 0 ).normalized(), Color.of( 0.5,  0.5, 0.5, 1 ), 100000000 )
     ];
-  }
-
-  draw_ground(graphics_state, model_transform) {
-    const street_h = 0.1;
-
-    this.stack.push(model_transform);
-    model_transform = model_transform
-                        .times(this.translate(0, 0, -100))
-                        .times(this.scale(20, street_h, 100))
-    this.shapes.box.draw(graphics_state, model_transform, this.grey);
   }
 
   /**
