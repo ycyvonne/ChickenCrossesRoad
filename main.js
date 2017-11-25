@@ -8,6 +8,9 @@ function load(script) {
 
 load('shapes.js');
 load('Graphics_Stack.js');
+load('Basic_Component.js');
+
+load('Car.js');
 load('Ground.js');
 load('Player.js');
 load('Interaction_Controller.js');
@@ -99,19 +102,20 @@ class Main_Scene extends Scene_Component {
   init_objects(graphics_state, model_transform) {
     
     this.ground = new Ground(this.context, graphics_state, model_transform, this.stack);
-    this.player = new Player(this.context, graphics_state, model_transform, this.stack);
+    // this.player = new Player(this.context, graphics_state, model_transform, this.stack);
 
+    this.ground.addStrip('street');
     this.ground.addStrip('grass');
     this.ground.addStrip('grass');
     this.ground.addStrip('grass');
     this.ground.addStrip('grass');
-    // this.ground.addStrip('street');
+    
 
-    this.interaction = new Interaction_Controller(this.player, this.ground);
+    // this.interaction = new Interaction_Controller(this.player, this.ground);
   }
 
   update_objects() {
-    this.player.draw(this.t);
+    // this.player.draw(this.t);
     this.ground.draw(this.t);
   }
 

@@ -1,50 +1,3 @@
-class Basic_Component extends Scene_Component {
-
-	constructor(context) {
-		super(context);
-		this.submit_shapes(context, getShapes())
-
-		Object.assign(
-	      this, { 
-	      	white:  context.get_instance( Phong_Model ).material( Color.of(  1,  1,  1,  1 ), .2, 1, .7, 40 ), 
-	      	black:  context.get_instance( Phong_Model ).material( Color.of(  0,  0,  0,  1 ), .2, 1, .7, 40 ), 
-	        yellow: context.get_instance( Phong_Model ).material( Color.of( .8, .8, .3,  1 ), .2, 1, .7, 40 ),  // Call material() on the Phong_Shader,
-	        grey:   context.get_instance( Phong_Model ).material( Color.of( .2, .2, .2,  2 ), .2, 1,  1, 40 ),  // which returns a special-made "material" 
-	        brown:  context.get_instance( Phong_Model ).material( Color.of( .2, .2, .05,  1 ), .2, 1,  1, 40 ),
-	        red:    context.get_instance( Phong_Model ).material( Color.of(  1,  0,  0, .9 ), .1, .7, 1, 40 ),  // (a JavaScript object)
-	        green:  context.get_instance( Phong_Model ).material( Color.of( .25, .5,  0,  1 ), .1, .7, 1, 40 ),
-	        blue:   context.get_instance( Phong_Model ).material( Color.of(  0,  0,  1, .8 ), .1, .7, 1, 40 ),
-	        silver: context.get_instance( Phong_Model ).material( Color.of( .8, .8, .8,  1 ),  0,  1, 1, 40 )
-	      }
-	    );
-	}
-
-	translate(x, y, z) {
-		return Mat4.translation(Vec.of(x, y, z));
-	}
-	scale(x, y, z) {
-		return Mat4.scale(Vec.of(x, y, z));
-	}
-	rotate(angle, x, y, z) {
-		return Mat4.rotation(angle, Vec.of(x, y, z));
-	}
-
-	getRandom(high, low, roundTo) {
-		let random = Math.random() * (high - low) + low;
-		if (!roundTo) {
-			return random;
-		}
-	    return parseFloat(random.toFixed(roundTo));
-	}
-
-	/**
-	 * abstract method, must override
-	 */
-	draw() {
-		throw new Exception('Must override abstract method draw() in class Basic_Component');
-	}
-}
-
 class Ground {
 	constructor(context, graphics_state, model_transform, stack) {
 		this.context = context;
@@ -59,10 +12,10 @@ class Ground {
 		this.base = new Ground_Base(context, graphics_state, model_transform, stack, this.l);
 	}
 
-	draw() {
-		this.base.draw();
+	draw(time) {
+		this.base.draw(time);
 		for (let strip of this.strips) {
-			strip.draw();
+			strip.draw(time);
 		}
 	}
 
@@ -73,19 +26,22 @@ class Ground {
 		switch(type) {
 			case 'grass': 
 				strip = new Grass_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
+				this.currentStripId++;
 				break;
 			case 'street':
 				strip = new Street_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
+				this.currentStripId += 2;
 				break;
 			case 'water':
 				strip = new Water_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
+				this.currentStripId++;
 				break;
 			default:
 				strip = new Grass_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
+				this.currentStripId++;
 		}
 
 		this.strips.push(strip);
-		this.currentStripId++;
 	}
 
 	getStripObstacles(stripId) {
@@ -107,7 +63,7 @@ class Ground_Base extends Basic_Component {
 		this.l = length;
 	}
 
-	draw() {
+	draw(time) {
 		let model_transform = this.mt;
 		let graphics_state = this.gs;
 
@@ -135,11 +91,48 @@ class Ground_Strip extends Basic_Component {
 class Street_Strip extends Ground_Strip {
 	constructor(context, id, gs, mt, stack) {
 		super(context, id, gs, mt, stack);
+		this.cars = new Cars(context, gs, stack);
+		this.cars.addCar(0);
+		// this.car = new Car(context, gs, stack, 3);
 		this.w = 2;
 	}
 
-	draw() {
+	drawStreetLine(graphics_state, model_transform, options) {
+		model_transform = model_transform
+							.times(this.translate(options.pos_x, 0, 0))
+							.times(this.scale(2, 0.02, 0.2));
+		this.shapes.box.draw(graphics_state, model_transform, this.greyLight);
+	}
 
+	drawWheel(graphics_state, model_transform, options) {
+
+		// outer black wheel
+		model_transform = model_transform
+							.times(this.scale(options.flipX, 1, options.flipZ))
+							.times(this.translate(1.5, 0.4, 1))
+							.times(this.scale(0.4, 0.4, 0.2));
+		this.shapes.box.draw(graphics_state, model_transform, this.black);
+
+		// inner white
+		model_transform = model_transform
+							.times(this.translate(0, 0, 0.01))
+							.times(this.scale(0.3, 0.3, 1));
+		this.shapes.box.draw(graphics_state, model_transform, this.white);
+	}
+
+	draw(time) {
+		let model_transform = this.mt;
+		let graphics_state = this.gs;
+
+		this.cars.draw(model_transform, time);
+
+		// draw street lines
+		model_transform = model_transform.times(this.translate(0, 0.1, -2));
+		for (let x of [-16, -8, 0, 8, 16]) {
+			this.drawStreetLine(graphics_state, model_transform, {
+				pos_x: x
+			});
+		}
 	}
 }
 
@@ -149,7 +142,6 @@ class Water_Strip extends Ground_Strip {
 	}
 
 	draw() {
-
 	}
 }
 
@@ -211,12 +203,12 @@ class Grass_Strip extends Ground_Strip {
 	    this.shapes.box.draw(graphics_state, model_transform, this.green);
 	    model_transform = this.stack.pop();
 
-	    for (let tree of this.trees) {
-	    	this.draw_tree(graphics_state, model_transform, {
-		      position_x: tree.pos_x,
-		      height: tree.height
-		    });
-	    }
+	    // for (let tree of this.trees) {
+	    // 	this.draw_tree(graphics_state, model_transform, {
+		   //    position_x: tree.pos_x,
+		   //    height: tree.height
+		   //  });
+	    // }
 	    
 	}
 }
