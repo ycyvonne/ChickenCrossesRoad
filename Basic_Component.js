@@ -30,7 +30,7 @@ class Basic_Component extends Scene_Component {
 		return Mat4.rotation(angle, Vec.of(x, y, z));
 	}
 
-	getRandom(high, low, roundTo) {
+	getRandom(low, high, roundTo) {
 		let random = Math.random() * (high - low) + low;
 		if (!roundTo) {
 			return random;

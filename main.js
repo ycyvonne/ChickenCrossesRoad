@@ -102,20 +102,23 @@ class Main_Scene extends Scene_Component {
   init_objects(graphics_state, model_transform) {
     
     this.ground = new Ground(this.context, graphics_state, model_transform, this.stack);
-    // this.player = new Player(this.context, graphics_state, model_transform, this.stack);
+    this.player = new Player(this.context, graphics_state, model_transform, this.stack);
 
+    this.ground.addStrip('grass');
+    this.ground.addStrip('grass');
+    this.ground.addStrip('grass');
+    this.ground.addStrip('grass');
     this.ground.addStrip('street');
     this.ground.addStrip('grass');
     this.ground.addStrip('grass');
-    this.ground.addStrip('grass');
-    this.ground.addStrip('grass');
+    this.ground.addStrip('street');
     
 
-    // this.interaction = new Interaction_Controller(this.player, this.ground);
+    this.interaction = new Interaction_Controller(this.player, this.ground);
   }
 
   update_objects() {
-    // this.player.draw(this.t);
+    this.player.draw(this.t);
     this.ground.draw(this.t);
   }
 

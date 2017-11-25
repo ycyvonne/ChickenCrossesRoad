@@ -8,43 +8,50 @@ class Cars {
 	}
 
 	draw(model_transform, time) {
-		let numToShift = 0;
-		for (let car of this.cars) {
+		let carOffScreenIndex = -1;
+
+		for (const [index, car] of this.cars.entries()) {
 			if (car.offScreen()) {
-				numToShift++;
+				carOffScreenIndex = index;
 			}
 			else {
 				car.draw(model_transform, time);
 			}
 		}
 
-		for (let i = 0; i < numToShift; i++) {
-			this.shiftCar();
-			this.addCar(time);
+		if (carOffScreenIndex != -1) {
+			let car = this.cars[carOffScreenIndex];
+			let speed = car.speed;
+			let street = car.street;
+			this.removeCar(carOffScreenIndex);
+			this.addCar(time, {
+				speed, street
+			})
 		}
 	}
 
-	addCar(time) {
-		let car = new Car(this.context, this.gs, this.stack, 5, time);
+	addCar(time, options) {
+		let car = new Car(this.context, this.gs, this.stack, time, options.street);
 		this.cars.push(car);
 	}
 
-	shiftCar() {
-		this.cars.shift();
+	removeCar(index) {
+		this.cars.splice(index, 1)
 	}
 
 }
 
 class Car extends Basic_Component {
 
-	constructor(context, gs, stack, speed, time) {
+	constructor(context, gs, stack, time, street) {
 		super(context);
 		this.gs = gs;
 		this.stack = stack;
-		this.speed = speed;
 		this.translateX = 0;
 		this.roadOffset = 25;
+		this.street = street;
 
+		this.speed = this.getRandom(5, 8, 0);
 		this.constructionTime = time;
 	}
 
@@ -71,9 +78,15 @@ class Car extends Basic_Component {
 		let graphics_state = this.gs;
 
 		this.translateX = -this.roadOffset + (time - this.constructionTime) / 1000 * this.speed;
+		this.translateZ = -1 - 2 * this.street;
+
+		model_transform = model_transform
+							.times(this.translate(this.translateX,0.8,this.translateZ))
+							.times(this.scale(1,1,0.8));
+		let old = model_transform;
 
 		// draw car body
-		model_transform = model_transform.times(this.translate(this.translateX, 0.8, -1));
+		// model_transform = model_transform.times(this.translate(, 0.8, this.translateZ));
 		this.stack.push(model_transform);
 		model_transform = model_transform.times(this.scale(2.5, 0.5, 1));
 		this.shapes.box.draw(graphics_state, model_transform, this.yellow);
@@ -99,8 +112,8 @@ class Car extends Basic_Component {
 								.times(this.scale(0.3, 0.5, 0.8));
 		this.shapes.box.draw(graphics_state, model_transform, this.yellow);
 
-		model_transform = this.stack.peek();
-		model_transform = model_transform.times(this.translate(this.translateX, 0, -1));
+		model_transform = old;
+		model_transform = model_transform.times(this.translate(0, -0.8, 0));
 
 		// draw wheels
 		for (let x of [1, -1]) {

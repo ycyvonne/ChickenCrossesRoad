@@ -31,6 +31,7 @@ class Ground {
 			case 'street':
 				strip = new Street_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
 				this.currentStripId += 2;
+				this.strips.push(strip);
 				break;
 			case 'water':
 				strip = new Water_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
@@ -92,8 +93,12 @@ class Street_Strip extends Ground_Strip {
 	constructor(context, id, gs, mt, stack) {
 		super(context, id, gs, mt, stack);
 		this.cars = new Cars(context, gs, stack);
-		this.cars.addCar(0);
-		// this.car = new Car(context, gs, stack, 3);
+		this.cars.addCar(0, {
+			street: 0
+		});
+		this.cars.addCar(0, {
+			street: 1
+		});
 		this.w = 2;
 	}
 
@@ -104,25 +109,11 @@ class Street_Strip extends Ground_Strip {
 		this.shapes.box.draw(graphics_state, model_transform, this.greyLight);
 	}
 
-	drawWheel(graphics_state, model_transform, options) {
-
-		// outer black wheel
-		model_transform = model_transform
-							.times(this.scale(options.flipX, 1, options.flipZ))
-							.times(this.translate(1.5, 0.4, 1))
-							.times(this.scale(0.4, 0.4, 0.2));
-		this.shapes.box.draw(graphics_state, model_transform, this.black);
-
-		// inner white
-		model_transform = model_transform
-							.times(this.translate(0, 0, 0.01))
-							.times(this.scale(0.3, 0.3, 1));
-		this.shapes.box.draw(graphics_state, model_transform, this.white);
-	}
-
 	draw(time) {
 		let model_transform = this.mt;
 		let graphics_state = this.gs;
+
+		model_transform = model_transform.times(this.translate(0,0,this.id * -2));
 
 		this.cars.draw(model_transform, time);
 
@@ -203,12 +194,12 @@ class Grass_Strip extends Ground_Strip {
 	    this.shapes.box.draw(graphics_state, model_transform, this.green);
 	    model_transform = this.stack.pop();
 
-	    // for (let tree of this.trees) {
-	    // 	this.draw_tree(graphics_state, model_transform, {
-		   //    position_x: tree.pos_x,
-		   //    height: tree.height
-		   //  });
-	    // }
+	    for (let tree of this.trees) {
+	    	this.draw_tree(graphics_state, model_transform, {
+		      position_x: tree.pos_x,
+		      height: tree.height
+		    });
+	    }
 	    
 	}
 }
