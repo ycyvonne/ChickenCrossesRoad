@@ -9,7 +9,7 @@
   load("vendor/collisions.js");
 
   load("main.js");
-  load("scene-controller.js");
+  load("scene.js");
 
 
 })();

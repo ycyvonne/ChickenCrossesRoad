@@ -6,14 +6,14 @@ function load(script) {
   document.write('<'+'script src="'+script+'" type="text/javascript"><' + '/script>');
 }
 
-load('shapes.js');
-load('Graphics_Stack.js');
-load('Basic_Component.js');
+load('game_dependencies/Shapes.js');
+load('game_dependencies/Graphics_Stack.js');
+load('game_dependencies/Basic_Component.js');
 
-load('Car.js');
-load('Ground.js');
-load('Player.js');
-load('Interaction_Controller.js');
+load('game_view_components/Car.js');
+load('game_view_components/Ground.js');
+load('game_view_components/Player.js');
+load('game_view_components/Interaction_Controller.js');
 
 /*********************************
  * Constants
