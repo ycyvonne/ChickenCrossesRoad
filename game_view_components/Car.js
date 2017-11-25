@@ -7,6 +7,16 @@ class Cars {
 		this.cars = [];
 	}
 
+	getObstacles(street) {
+		let obstacles = [];
+		for (let car of this.cars) {
+			if (car.street == street) {
+				obstacles.push(...car.obstacles);
+			}
+		}
+		return obstacles;
+	}
+
 	draw(model_transform, time) {
 		let carOffScreenIndex = -1;
 
@@ -53,6 +63,18 @@ class Car extends Basic_Component {
 
 		this.speed = this.getRandom(5, 8, 0);
 		this.constructionTime = time;
+	}
+
+	get obstacles(){
+		let min = this.translateX - 2;
+		let max = this.translateX + 3.5;
+		let increment = 0.2;
+		let o = [];
+
+		for (let i = min; i < max; i += increment) {
+			o.push(i);
+		}
+		return o;
 	}
 
 	drawWheel(graphics_state, model_transform, options) {

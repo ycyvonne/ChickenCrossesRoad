@@ -14,6 +14,7 @@ class Player extends Basic_Component {
 		this.lastJumpingTime = 0;
 		this.jumpDuration = 100;
 		this.isJumping = 0;
+		this.isSquashed = false;
 	}
 
 	addInteraction(interaction) {
@@ -33,6 +34,10 @@ class Player extends Basic_Component {
 		this.lastJumpingTime = time;
 		this.isJumping = 1;
 	}
+
+	squash() {
+		this.isSquashed = true;
+	}
 	
 	draw(time) {
 		let model_transform = this.mt;
@@ -45,6 +50,10 @@ class Player extends Basic_Component {
 			}
 		}
 		model_transform = model_transform.times(this.translate(0, this.isJumping * 0.4, 1));
+
+		if (this.isSquashed) {
+			model_transform = model_transform.times(this.scale(1,0.1, 1));
+		}
 
 		// draw feet
 

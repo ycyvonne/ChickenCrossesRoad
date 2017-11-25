@@ -5,7 +5,9 @@ class Interaction_Controller {
 		this.player = player;
 		this.ground = ground;
 
+		this.collisionDelta = 0.2;
 		this.player.addInteraction(this);
+		this.ground.addInteraction(this);
 	}
 
 	get playerCoord() {
@@ -21,8 +23,14 @@ class Interaction_Controller {
 		if (newZ < 0 || Math.abs(newX) > (this.ground.l - 1) / 2) {
 			return true;
 		}
+
 		let obstacles = this.ground.getStripObstacles(newZ);
-		return obstacles.indexOf(newX) != -1;
+		for (let obstacle of obstacles) {
+			if (Math.abs(obstacle - newX) < this.collisionDelta) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	playerOnWater() {
@@ -32,6 +40,10 @@ class Interaction_Controller {
 			return true;
 		}
 		return false;
+	}
+
+	squashPlayer() {
+		this.player.squash();
 	}
 
 }

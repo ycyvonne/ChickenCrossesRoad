@@ -19,6 +19,14 @@ class Ground {
 		}
 	}
 
+	addInteraction(interaction) {
+		for (let strip of this.strips) {
+			if (strip.type == 'street') {
+				strip.addInteraction(interaction);
+			}
+		}
+	}
+
 	addStrip(type) {
 
 		let strip = null;
@@ -31,7 +39,13 @@ class Ground {
 			case 'street':
 				strip = new Street_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
 				this.currentStripId += 2;
-				this.strips.push(strip);
+
+				// shallow copy
+				let firstStrip = Object.assign( Object.create( Object.getPrototypeOf(strip)), strip)
+				firstStrip.street = 0;
+				strip.street = 1;
+
+				this.strips.push(firstStrip);				
 				break;
 			case 'water':
 				strip = new Water_Strip(this.context, this.currentStripId, this.gs, this.mt, this.stack);
@@ -92,7 +106,11 @@ class Ground_Strip extends Basic_Component {
 		this.stack = stack;
 		this.h = 0.2;
 		this.l = 21;
-		this.obstacles = [];
+		this.o = []
+	}
+
+	get obstacles() {
+		return this.o;
 	}
 
 	addInteraction(interaction) {
@@ -114,6 +132,17 @@ class Street_Strip extends Ground_Strip {
 		this.w = 2;
 	}
 
+	setStreet(i) {
+		this.street = i;
+	}
+
+	get obstacles() {
+		if (!this.street) {
+			this.street = 0;
+		}
+		return this.cars.getObstacles(this.street);
+	}
+
 	drawStreetLine(graphics_state, model_transform, options) {
 		model_transform = model_transform
 							.times(this.translate(options.pos_x, 0, 0))
@@ -124,6 +153,10 @@ class Street_Strip extends Ground_Strip {
 	draw(time) {
 		let model_transform = this.mt;
 		let graphics_state = this.gs;
+
+		if (this.interaction.collisionExists(0,0)) {
+			this.interaction.squashPlayer();
+		}
 
 		model_transform = model_transform.times(this.translate(0,0,this.id * -2));
 
@@ -201,7 +234,7 @@ class Grass_Strip extends Ground_Strip {
 					pos_x: randomX,
 					height: this.getRandom(1, 2, 0)
 				})
-				this.obstacles.push(randomX * 10);
+				this.o.push(randomX * 10);
 			}
 		}
 	}
