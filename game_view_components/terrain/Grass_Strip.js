@@ -16,6 +16,9 @@ class Grass_Strip extends Ground_Strip {
         this.rockMaterial = context
         	.get_instance(Phong_Model)
         	.material(Color.of(0, 0, 0, 1), 1, 1, 1, 100, context.get_instance('/assets/rock.png'))
+
+        this.treeMaterial = this.green;
+        this.rockMaterial = this.grey;
 	}
 
 	draw_rock(graphics_state, model_transform, options) {
