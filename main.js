@@ -134,6 +134,7 @@ class Main_Scene extends Scene_Component {
     this.t = graphics_state.animation_time;
     this.dt = graphics_state.animation_delta_time;
 
+
     let model_transform = Mat4.identity();
 
     if (!this.initDisplay) {
@@ -151,7 +152,7 @@ class Main_Scene extends Scene_Component {
    */
   make_control_panel() {
 
-    this.live_string(() => "Frame Rate: "  + this.dt);
+    this.live_string(() => "Frame Rate (frames/ms): "  + 1/this.dt);
     this.new_line();
 
     this.key_triggered_button("Go forward", "w", () => {

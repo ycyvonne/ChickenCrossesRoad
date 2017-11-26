@@ -77,4 +77,20 @@ Many things are randomely / procedurally generated in this game. The positions o
 
 For cars, the speed, color, and direction are also random. 
 
+##### Frame Rate
+
+The frame rate is displayed via the inverse of `graphics_state.animation_delta_time`:
+
+```
+// in display()
+this.dt = graphics_state.animation_delta_time;
+
+
+// in make_control_panel()
+this.live_string(() => "Frame Rate (frames/ms): "  + 1/this.dt);
+```
+
+
+
+
 
