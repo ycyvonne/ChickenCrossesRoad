@@ -45,13 +45,29 @@ class Interaction_Controller {
 		return false;
 	}
 
-	playerOnWater() {
-		let type = this.ground.getType(this.playerCoord.z);
+	playerOnWater(z) {
+		if (typeof z == 'undefined') {
+			z = this.playerCoord.z;
+		}
+
+		let type = this.ground.getType(z);
 		if (type == 'water') {
 			this.scene.gameOver();
 			return true;
 		}
 		return false;
+	}
+
+	isSafe(dx, dz) {
+		let newX = this.playerCoord.x + dx;
+		let newZ = this.playerCoord.z + dz;
+
+		if (!this.playerOnWater(newZ)) {
+			return true;
+		}
+
+		let safety = this.ground.getSafety(newZ);
+		return safety.indexOf(newX) != -1;
 	}
 
 	squashPlayer() {

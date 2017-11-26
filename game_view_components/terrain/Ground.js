@@ -84,6 +84,13 @@ class Ground {
 		return this.strips[stripId].dangers;
 	}
 
+	getSafety(stripId) {
+		if (stripId < 0 || stripId > this.currentStripId) {
+			return [];
+		}
+		return this.strips[stripId].safety;
+	}
+
 	getType(stripId) {
 		if (stripId < 0 || stripId > this.currentStripId) {
 			return '';

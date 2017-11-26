@@ -15,6 +15,7 @@ class Player extends Basic_Component {
 		this.jumpDuration = 100;
 		this.isJumping = 0;
 		this.isSquashed = false;
+		this.isDrowned = false;
 	}
 
 	addInteraction(interaction) {
@@ -38,10 +39,20 @@ class Player extends Basic_Component {
 	squash() {
 		this.isSquashed = true;
 	}
+
+	drown() {
+		this.isDrowned = true;
+	}
 	
 	draw(time) {
 		let model_transform = this.mt;
 		let graphics_state = this.gs;
+
+		// handle sink
+		if (this.isDrowned) {
+			model_transform = model_transform
+								.times(this.translate(0, -1.5, 0));
+		}
 
 		// handle jump
 		if (this.isJumping) {
@@ -113,44 +124,52 @@ class Player extends Basic_Component {
 	goForward(time) {
 		this.triggerJump(time);
 		this.rotateAngle = 0;
+
+		if (!this.interaction.isSafe(0, 1)) {
+			this.drown();
+		}
+
 		if (!this.interaction.collisionExists(0,1)) {
 			this.curZ += this.step;
-			if (this.interaction.playerOnWater()) {
-				console.log('water!')
-			}
 		}
 	}
 
 	goBackward(time) {
 		this.triggerJump(time);
 		this.rotateAngle = 180;
+
+		if (!this.interaction.isSafe(0, -1)) {
+			this.drown();
+		}
+
 		if (!this.interaction.collisionExists(0,-1)) {
 			this.curZ -= this.step;
-			if (this.interaction.playerOnWater()) {
-				console.log('water!')
-			}
 		}
 	}
 
 	goLeft(time) {
 		this.triggerJump(time);
 		this.rotateAngle = 90;
+
+		if (!this.interaction.isSafe(-1, 0)) {
+			this.drown();
+		}
+
 		if (!this.interaction.collisionExists(-1, 0)) {
 			this.curX -= this.step;
-			if (this.interaction.playerOnWater()) {
-				console.log('water!')
-			}
 		}
 	}
 
 	goRight(time) {
 		this.triggerJump(time);
 		this.rotateAngle = 270;
+
+		if (!this.interaction.isSafe(1, 0)) {
+			this.drown();
+		}
+
 		if (!this.interaction.collisionExists(1, 0)) {
 			this.curX += this.step;
-			if (this.interaction.playerOnWater()) {
-				console.log('water!')
-			}
 		}
 	}
 

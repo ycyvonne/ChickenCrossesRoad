@@ -10,6 +10,7 @@ class Ground_Strip extends Basic_Component {
 		this.l = 21;
 		this.o = [];
 		this.d = [];
+		this.s = [];
 	}
 
 	get obstacles() {
@@ -18,6 +19,10 @@ class Ground_Strip extends Basic_Component {
 
 	get dangers() {
 		return this.d;
+	}
+
+	get safety() {
+		return this.s;
 	}
 
 	addInteraction(interaction) {

@@ -70,7 +70,7 @@ class Water_Strip extends Ground_Strip {
 		let graphics_state = this.gs;
 
 		this.initData();
-
+		
 		model_transform = this.stack.peek();
 	    model_transform = model_transform.times(this.translate(0, this.h, -this.w - offset));
 	    this.stack.push(model_transform);
