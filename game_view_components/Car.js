@@ -35,7 +35,7 @@ class Cars {
 			let street = car.street;
 			this.removeCar(carOffScreenIndex);
 			this.addCar(time, {
-				speed, street
+				street
 			})
 		}
 	}
@@ -64,10 +64,13 @@ class Car extends Basic_Component {
 		this.speed = this.getRandom(6, 10, 0);
 		this.direction = this.getRandom(0, 1, 0);
 		this.constructionTime = time;
+
+		const colors = [this.yellow, this.orange, this.blue];
+		this.color = colors[this.getRandom(0, 2, 0)];
 	}
 
 	get dangers(){
-		let min = this.translateX - 2;
+		let min = this.translateX - 3.5;
 		let max = this.translateX + 3.5;
 		let increment = 0.2;
 		let d = [];
@@ -114,7 +117,7 @@ class Car extends Basic_Component {
 		// model_transform = model_transform.times(this.translate(, 0.8, this.translateZ));
 		this.stack.push(model_transform);
 		model_transform = model_transform.times(this.scale(2.5, 0.5, 1));
-		this.shapes.box.draw(graphics_state, model_transform, this.yellow);
+		this.shapes.box.draw(graphics_state, model_transform, this.color);
 		model_transform = this.stack.pop();
 
 		// draw car hood
@@ -135,7 +138,7 @@ class Car extends Basic_Component {
 		model_transform = model_transform
 								.times(this.translate(0, 1, 0))
 								.times(this.scale(0.3, 0.5, 0.8));
-		this.shapes.box.draw(graphics_state, model_transform, this.yellow);
+		this.shapes.box.draw(graphics_state, model_transform, this.color);
 
 		model_transform = old;
 		model_transform = model_transform.times(this.translate(0, -0.8, 0));

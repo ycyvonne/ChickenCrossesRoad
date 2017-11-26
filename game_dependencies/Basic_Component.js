@@ -13,6 +13,7 @@ class Basic_Component extends Scene_Component {
 	        grey:   context.get_instance( Phong_Model ).material( Color.of( .2, .2, .2,  2 ), .2, 1,  1, 40 ),  // which returns a special-made "material" 
 	        greyLight:  context.get_instance( Phong_Model ).material( Color.of(  0.4,  0.4,  0.4,  1 ), .2, 1, .7, 40 ), 
 	        brown:  context.get_instance( Phong_Model ).material( Color.of( .2, .2, .05,  1 ), .2, 1,  1, 40 ),
+	        orange: context.get_instance( Phong_Model ).material( Color.of( 1, .3, 0.05,  1 ), .2, 1,  1, 40 ),
 	        red:    context.get_instance( Phong_Model ).material( Color.of(  1,  0,  0, .9 ), .1, .7, 1, 40 ),  // (a JavaScript object)
 	        green:  context.get_instance( Phong_Model ).material( Color.of( .3, .6,  .3,  1 ), .1, .7, 1, 40 ),
 	        greenDark:  context.get_instance( Phong_Model ).material( Color.of( .1, .5,  .1,  1 ), .1, .7, 1, 40 ),
