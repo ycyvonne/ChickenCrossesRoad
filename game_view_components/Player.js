@@ -75,9 +75,6 @@ class Player extends Basic_Component {
 			model_transform = model_transform.times(this.scale(1,0.1, 1));
 		}
 
-		// draw feet
-
-
 		// draw body
 	    model_transform = model_transform
 	    					.times(this.translate(this.curX * 2, 0.6 + 0.2, -this.curZ * 2))

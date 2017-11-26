@@ -61,7 +61,8 @@ class Car extends Basic_Component {
 		this.translateX = -this.roadOffset;
 		this.street = street;
 
-		this.speed = this.getRandom(5, 8, 0);
+		this.speed = this.getRandom(6, 10, 0);
+		this.direction = this.getRandom(0, 1, 0);
 		this.constructionTime = time;
 	}
 
@@ -93,7 +94,7 @@ class Car extends Basic_Component {
 	}
 
 	offScreen() {
-		return this.translateX > this.roadOffset;
+		return Math.abs(this.translateX) > this.roadOffset;
 	}
 
 	draw(model_transform, time) {
@@ -103,7 +104,9 @@ class Car extends Basic_Component {
 		this.translateZ = -1 - 2 * this.street;
 
 		model_transform = model_transform
-							.times(this.translate(this.translateX,0.8,this.translateZ))
+							.times(this.translate(0,0.8,this.translateZ))
+							.times(this.rotate(180 * this.direction * Math.PI / 180, 0, 1, 0))
+							.times(this.translate(this.translateX, 0, 0))
 							.times(this.scale(1,1,0.8));
 		let old = model_transform;
 
