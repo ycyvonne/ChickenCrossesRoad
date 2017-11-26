@@ -17,11 +17,11 @@ class Street_Strip extends Ground_Strip {
 		this.street = i;
 	}
 
-	get obstacles() {
+	get dangers() {
 		if (!this.street) {
 			this.street = 0;
 		}
-		return this.cars.getObstacles(this.street);
+		return this.cars.getDangers(this.street);
 	}
 
 	drawStreetLine(graphics_state, model_transform, options) {
@@ -35,7 +35,7 @@ class Street_Strip extends Ground_Strip {
 		let model_transform = this.mt;
 		let graphics_state = this.gs;
 
-		if (this.interaction.collisionExists(0,0)) {
+		if (this.interaction.dangerExists(0,0)) {
 			this.interaction.squashPlayer();
 		}
 

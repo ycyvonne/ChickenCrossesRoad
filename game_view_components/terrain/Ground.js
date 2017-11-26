@@ -77,6 +77,13 @@ class Ground {
 		return this.strips[stripId].obstacles;
 	}
 
+	getStripDangers(stripId) {
+		if (stripId < 0 || stripId > this.currentStripId) {
+			return [];
+		}
+		return this.strips[stripId].dangers;
+	}
+
 	getType(stripId) {
 		if (stripId < 0 || stripId > this.currentStripId) {
 			return '';

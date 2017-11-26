@@ -17,9 +17,9 @@ class Interaction_Controller {
 		}
 	}
 
-	collisionExists(x, z) {
-		let newX = this.playerCoord.x + x;
-		let newZ = this.playerCoord.z + z;
+	collisionExists(dx, dz) {
+		let newX = this.playerCoord.x + dx;
+		let newZ = this.playerCoord.z + dz;
 		if (newZ < 0 || Math.abs(newX) > (this.ground.l - 1) / 2) {
 			return true;
 		}
@@ -27,6 +27,18 @@ class Interaction_Controller {
 		let obstacles = this.ground.getStripObstacles(newZ);
 		for (let obstacle of obstacles) {
 			if (Math.abs(obstacle - newX) < this.collisionDelta) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	dangerExists(dx, dz) {
+		let newX = this.playerCoord.x + dx;
+		let newZ = this.playerCoord.z + dz;
+		let dangers = this.ground.getStripDangers(newZ);
+		for (let danger of dangers) {
+			if (Math.abs(danger - newX) < this.collisionDelta) {
 				return true;
 			}
 		}
