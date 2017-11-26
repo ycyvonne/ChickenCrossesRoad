@@ -23,16 +23,6 @@ load('game_view_components/terrain/Ground.js');
 load('game_view_components/Player.js');
 load('game_view_components/Interaction_Controller.js');
 
-
-/*********************************
- * Constants
- ***********************************/
-
-const CONSTANTS = {
-  textures: [ "/assets/rgb.jpg", "/assets/stars.png", "/assets/earth.gif", "/assets/text.png" ]
-}
-
-
 /*********************************
  * Main Scene
  ***********************************/
@@ -65,16 +55,7 @@ class Main_Scene extends Scene_Component {
         projection_transform: Mat4.perspective( Math.PI/4, context.width/context.height, .1, 1000 )
       }
     );
-
-    Object.assign(
-      this, { 
-        shader: context.get_instance( Fake_Bump_Map ),
-        textures: [],
-        gallery: false,
-        patch_only: false,
-        revolution_only: false
-      }
-    );
+    
     this.gameInPlay = true;
   }
 

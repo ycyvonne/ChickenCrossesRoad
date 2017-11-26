@@ -6,6 +6,12 @@ class Grass_Strip extends Ground_Strip {
 		this.treeNum = null;
 		this.trees = null;
 		this.w = 1;
+
+		let random = Math.floor(this.getRandom(1, 4, 1));
+
+		this.treeMaterial = context
+        	.get_instance(Phong_Model)
+        	.material(Color.of(0, 0, 0, 1), 1, 1, 1, 100, context.get_instance('/assets/tree-' + random + '.jpg'))
 	}
 
 	draw_tree(graphics_state, model_transform, options) {
@@ -22,7 +28,7 @@ class Grass_Strip extends Ground_Strip {
 	    model_transform = model_transform
 	                        .times(this.translate(0, options.height + tree_trunk_th, 0))
 	                        .times(this.scale(1, options.height, 1));
-	    this.shapes.box.draw(graphics_state, model_transform, this.green);
+	    this.shapes.box.draw(graphics_state, model_transform, this.treeMaterial);
 	}
 
 	initData() {

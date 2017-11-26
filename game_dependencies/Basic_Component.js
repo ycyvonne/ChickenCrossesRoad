@@ -6,6 +6,7 @@ class Basic_Component extends Scene_Component {
 
 		Object.assign(
 	      this, { 
+	      	shader: context.get_instance( Fake_Bump_Map ),
 	      	white:  context.get_instance( Phong_Model ).material( Color.of(  1,  1,  1,  1 ), .2, 1, .7, 40 ), 
 	      	black:  context.get_instance( Phong_Model ).material( Color.of(  0,  0,  0,  1 ), .2, 1, .7, 40 ), 
 	        yellow: context.get_instance( Phong_Model ).material( Color.of( .7, .7, .3,  1 ), .2, 1, .7, 40 ),  // Call material() on the Phong_Shader,
