@@ -7,7 +7,7 @@ class Grass_Strip extends Ground_Strip {
 		this.trees = null;
 		this.w = 1;
 
-		let random = Math.floor(this.getRandom(1, 4, 1));
+		let random = this.getRandom(1, 4, 0);
 
 		this.treeMaterial = context
         	.get_instance(Phong_Model)

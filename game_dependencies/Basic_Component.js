@@ -34,8 +34,8 @@ class Basic_Component extends Scene_Component {
 
 	getRandom(low, high, roundTo) {
 		let random = Math.random() * (high - low) + low;
-		if (!roundTo) {
-			return random;
+		if (typeof roundTo == 'undefined') {
+			roundTo = 0;
 		}
 	    return parseFloat(random.toFixed(roundTo));
 	}
