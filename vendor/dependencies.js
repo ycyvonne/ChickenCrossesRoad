@@ -1,5 +1,5 @@
 let core_dependencies = "Vec Mat Mat4 Shape Keyboard_Manager Graphics_State Light Color Graphics_Addresses Shader Canvas_Manager Texture Scene_Component Object_From_File Code_Manager".split(' ');
-let all_dependencies =  "Triangle Square Tetrahedron Windmill Subdivision_Sphere Cube Phong_Model Funny_Shader Movement_Controls Global_Info_Table".split(' ');
+let all_dependencies =  "Triangle Pyramid Square Tetrahedron Windmill Subdivision_Sphere Cube Phong_Model Funny_Shader Movement_Controls Global_Info_Table".split(' ');
 
   // *********** TRIANGLE ***********
 class Triangle extends Shape    // First, the simplest possible Shape – one triangle.  It has 3 vertices, each
@@ -10,7 +10,43 @@ class Triangle extends Shape    // First, the simplest possible Shape – one tr
       this.texture_coords = [ Vec.of(0,0),   Vec.of(1,0),   Vec.of(0,1)   ];   // ...
       this.indices        = [ 0, 1, 2 ];                                       // Index into our vertices to connect them into a whole Triangle.
     }
-}       
+}
+
+/*****************************************************
+ * * Custom Pyramid Shape * * 
+ *****************************************************/
+class Pyramid extends Shape
+{
+  constructor()                 // having their own 3D position, normal vector, and texture-space coordinate.
+    { super();
+      this.positions      = [
+        Vec.of(1,0,0), Vec.of(0,0,1), Vec.of(0,0,-1),
+        Vec.of(1,0,0), Vec.of(0,0,1), Vec.of(0,0,-1) ,
+        Vec.of(-1,0,0), Vec.of(0,0,1), Vec.of(0,0,-1) ,
+        Vec.of(0,1,0), Vec.of(1,0,0), Vec.of(0,0,-1) ,
+        Vec.of(0,1,0), Vec.of(0,0,-1), Vec.of(-1,0,0) ,
+        Vec.of(0,1,0), Vec.of(-1,0,0), Vec.of(0,0,1) ,
+        Vec.of(0,1,0), Vec.of(0,0,1), Vec.of(1,0,0)
+      ]; 
+      this.normals        = [
+        Vec.of(0,-1,0), Vec.of(0,-1,0), Vec.of(0,-1,0) ,            
+        Vec.of(0,-1,0), Vec.of(0,-1,0), Vec.of(0,-1,0) , 
+        Vec.of(1, 1, -1), Vec.of(1, 1, -1), Vec.of(1, 1, -1) ,          
+        Vec.of(-1, 1, -1), Vec.of(-1, 1, -1), Vec.of(-1, 1, -1) ,        
+        Vec.of(-1, 1, 1), Vec.of(-1, 1, 1), Vec.of(-1, 1, 1) ,
+        Vec.of(1, 1, 1), Vec.of(1, 1, 1), Vec.of(1, 1, 1)
+      ];  
+      this.texture_coords = [
+        Vec.of(0,0,0), Vec.of(1,0,0), Vec.of(0,1,0) ,   
+        Vec.of(0,0,0), Vec.of(1,0,0), Vec.of(0,1,0) ,   
+        Vec.of(0,0,0), Vec.of(1,0,0), Vec.of(0,1,0) ,    
+        Vec.of(0,0,0), Vec.of(1,0,0), Vec.of(0,1,0) , 
+        Vec.of(0,0,0), Vec.of(1,0,0), Vec.of(0,1,0) ,
+        Vec.of(0,0,0), Vec.of(1,0,0), Vec.of(0,1,0)
+      ];
+      this.indices = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];                                       // Index into our vertices to connect them into a whole Triangle.
+    }
+}
 
   // *********** SQUARE ***********
 class Square extends Shape      // A square, demonstrating shared vertices.  On any planar surface, the interior edges don't make any important seams.

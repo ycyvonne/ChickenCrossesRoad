@@ -131,6 +131,7 @@ class Main_Scene extends Scene_Component {
   display( graphics_state ) {
     this.draw_lights(graphics_state);
     this.t = graphics_state.animation_time;
+    this.dt = graphics_state.animation_delta_time;
 
     let model_transform = Mat4.identity();
 
@@ -148,6 +149,9 @@ class Main_Scene extends Scene_Component {
    * This function of a scene sets up its keyboard shortcuts.
    */
   make_control_panel() {
+
+    this.live_string(() => "Frame Rate: "  + this.dt);
+    this.new_line();
 
     this.key_triggered_button("Go forward", "w", () => {
       this.player.goForward(this.t);

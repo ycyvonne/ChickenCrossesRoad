@@ -17,6 +17,11 @@ class Interaction_Controller {
 		}
 	}
 
+	gameOver() {
+		console.log('game over')
+		// document.removeEventListener('keydown');
+	}
+
 	collisionExists(dx, dz) {
 		let newX = this.playerCoord.x + dx;
 		let newZ = this.playerCoord.z + dz;

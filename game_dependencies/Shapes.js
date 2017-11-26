@@ -37,6 +37,7 @@ function getShapes() {
       prism       : new ( Capped_Cylinder   .prototype.make_flat_shaded_version() )( 10, 10, [[0,1],[0,1]] ),
       gem         : new ( Subdivision_Sphere.prototype.make_flat_shaded_version() )(  2     ),
       swept_curve : new Surface_Of_Revolution( 10, 10, [ ...Vec.cast( [2, 0, -1], [1, 0, 0], [1, 0, 1], [0, 0, 2] ) ], [ [ 0, 1 ], [ 0, 7 ] ], Math.PI/3 ),
+      pyramid     : new Pyramid()
     };
   return shapes;
 }

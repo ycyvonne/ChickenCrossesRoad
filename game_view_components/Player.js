@@ -16,6 +16,8 @@ class Player extends Basic_Component {
 		this.isJumping = 0;
 		this.isSquashed = false;
 		this.isDrowned = false;
+
+		this.isDead = false;
 	}
 
 	addInteraction(interaction) {
@@ -38,15 +40,22 @@ class Player extends Basic_Component {
 
 	squash() {
 		this.isSquashed = true;
+		this.isDead = true;
 	}
 
 	drown() {
 		this.isDrowned = true;
+		this.isDead = true;
 	}
 	
 	draw(time) {
 		let model_transform = this.mt;
 		let graphics_state = this.gs;
+
+		// handle game over
+		if (this.isDead) {
+			this.interaction.gameOver();
+		}
 
 		// handle sink
 		if (this.isDrowned) {

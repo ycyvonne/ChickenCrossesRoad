@@ -11,7 +11,16 @@ class Grass_Strip extends Ground_Strip {
 
 		this.treeMaterial = context
         	.get_instance(Phong_Model)
-        	.material(Color.of(0, 0, 0, 1), 1, 1, 1, 100, context.get_instance('/assets/tree-' + random + '.jpg'))
+        	.material(Color.of(0, 0, 0, 1), 1, 1, 1, 100, context.get_instance('/assets/tree-' + random + '.jpg'));
+
+        this.rockMaterial = context
+        	.get_instance(Phong_Model)
+        	.material(Color.of(0, 0, 0, 1), 1, 1, 1, 100, context.get_instance('/assets/rock.png'))
+	}
+
+	draw_rock(graphics_state, model_transform, options) {
+		model_transform = model_transform.times(this.translate(options.position_x * 2, 1, 0))
+	    this.shapes.pyramid.draw(graphics_state, model_transform, this.rockMaterial);
 	}
 
 	draw_tree(graphics_state, model_transform, options) {
@@ -48,6 +57,26 @@ class Grass_Strip extends Ground_Strip {
 				this.o.push(randomX * 10);
 			}
 		}
+
+		if (!this.rockNum) {
+			this.rockNum = this.getRandom(0, 2, 0);
+		}
+
+		if (!this.rocks) {
+			this.rocks = [];
+			for (let i = 0; i < this.rockNum; i++) {
+
+				let randomX = this.getRandom(-10, 10, 0);
+
+				while (this.o.indexOf(randomX) != -1) {
+					randomX = this.getRandom(-10, 10, 0);
+				}
+				this.rocks.push({
+					pos_x: randomX,
+				})
+				this.o.push(randomX);
+			}
+		}
 	}
 
 	draw() {
@@ -68,6 +97,12 @@ class Grass_Strip extends Ground_Strip {
 	    	this.draw_tree(graphics_state, model_transform, {
 		      position_x: tree.pos_x,
 		      height: tree.height
+		    });
+	    }
+
+	    for (let rock of this.rocks) {
+	    	this.draw_rock(graphics_state, model_transform, {
+		      position_x: rock.pos_x,
 		    });
 	    }
 	    
