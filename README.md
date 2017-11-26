@@ -83,11 +83,11 @@ The frame rate is displayed via the inverse of `graphics_state.animation_delta_t
 
 ```
 // in display()
-this.dt = graphics_state.animation_delta_time;
+this.dt = graphics_state.animation_delta_time / 1000; // convert ms to s
 
 
 // in make_control_panel()
-this.live_string(() => "Frame Rate (frames/ms): "  + 1/this.dt);
+this.live_string(() => "Frame Rate (frames/s): "  + 1/this.dt);
 ```
 
 
