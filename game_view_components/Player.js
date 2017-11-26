@@ -5,7 +5,6 @@ class Player extends Basic_Component {
 		this.gs = gs;
 		this.mt = mt;
 		this.stack = stack;
-
 		this.curX = 0;
 		this.curZ = 7;
 		this.step = 1;

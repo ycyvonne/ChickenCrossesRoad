@@ -18,6 +18,11 @@
 			<span class="letter" id="D">D</span>
 		</div>
 	</div>
+	<div class="game-over">
+		<h4>GAME OVER</h4>
+		<h2 class="high-score">30</h2>
+		<div class="reset">Play Again</div>
+	</div>
 </div>
 <div id="canvases"></div>
 <table id="control_buttons" class="dropdown">
@@ -39,11 +44,16 @@
 
 	});
 
-	document.addEventListener('keyup', function() {
+	document.addEventListener('keyup', () => {
 		document.querySelectorAll('.letter').forEach(ele => {
 			ele.classList.remove('pressed')
 		});
 	});
+
+	document.querySelector('.reset').addEventListener('click', () => {
+		document.querySelector('.game-over').classList.remove('show');
+	});
+
 </script>
 </body>
 </html>

@@ -55,12 +55,13 @@ class Main_Scene extends Scene_Component {
         projection_transform: Mat4.perspective( Math.PI/4, context.width/context.height, .1, 1000 )
       }
     );
-    
-    this.gameInPlay = true;
-  }
+      }
 
-  gameOver() {
-    this.gameInPlay = false;
+  reset() {
+    this.ground = null;
+    this.player = null;
+    this.initDisplay = false;
+    this.stack = new Graphics_Stack();
   }
 
   /**
@@ -81,9 +82,7 @@ class Main_Scene extends Scene_Component {
     this.ground = new Ground(this.context, graphics_state, model_transform, this.stack);
     this.player = new Player(this.context, graphics_state, model_transform, this.stack);
 
-    this.ground.addStrip('grass');
-    this.ground.addStrip('grass');
-    this.ground.addStrip('water');
+    
     this.ground.addStrip('grass');
     this.ground.addStrip('grass');
     this.ground.addStrip('street');
@@ -101,8 +100,10 @@ class Main_Scene extends Scene_Component {
   }
 
   update_objects() {
-    this.player.draw(this.t);
-    this.ground.draw(this.t);
+    if (this.player)
+      this.player.draw(this.t);
+    if (this.ground)
+      this.ground.draw(this.t);
   }
 
   getCameraZ() {

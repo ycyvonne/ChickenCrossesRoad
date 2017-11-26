@@ -1,13 +1,29 @@
+* {
+	box-sizing: border-box;;
+}
+
 #canvases {
 	display: flex;
     align-items: center;
     justify-content: center;
 }
 
+h4 {
+	font-size: 40px;
+	margin: 0;
+}
+
+h2 {
+	font-size: 90px;
+	margin: 0;
+}
+
 .wrapper {
 	width: 800px;
+	height: 600px;
     position: absolute;
     left: 50%;
+    overflow: hidden;
     -webkit-transform: translateX(-50%);
     		transform: translateX(-50%);
 }
@@ -49,4 +65,35 @@
 .letter.pressed {
 	border: 5px solid #dede51;
     margin: 15px;
+}
+
+.game-over {
+	position: absolute;
+	-webkit-transform: translateX(-100%);;
+	transform: translateX(-100%);
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: white;
+    border: 20px solid #dede51;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    font-family: monospace;
+
+    -webkit-transition: transform 0.5s cubic-bezier(0.45,-0.06, 0.32, 1.21);
+    		transition: transform 0.5s cubic-bezier(0.45,-0.06, 0.32, 1.21);
+}
+
+.game-over.show {
+	-webkit-transform: translateX(0);;
+	transform: translateX(0);
+}
+
+.reset {
+	margin: 20px;
+    border: 10px solid black;
+    padding: 10px;
+    cursor: pointer;
 }

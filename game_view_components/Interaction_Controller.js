@@ -10,6 +10,7 @@ class Interaction_Controller {
 		this.collisionDelta = 0.2;
 		this.player.addInteraction(this);
 		this.ground.addInteraction(this);
+		this.gameIsOver = false;
 	}
 
 	get playerCoord() {
@@ -17,6 +18,10 @@ class Interaction_Controller {
 			x: this.player.curX,
 			z: this.player.curZ - 1
 		}
+	}
+
+	reset() {
+		this.scene.reset();
 	}
 
 	decrementScore() {
@@ -36,7 +41,20 @@ class Interaction_Controller {
 	}
 
 	gameOver() {
-		console.log('game over')
+		if (!this.gameIsOver) {
+
+			this.gameIsOver = true;
+
+			setTimeout(() => {
+				document.querySelector('.game-over').classList.add('show');
+				document.querySelector('.high-score').innerHTML = this.highestScore;
+				document.querySelector('.score').innerHTML = 0;
+			}, 500);
+			
+			setTimeout(() => {
+				this.reset()
+			}, 1500);
+		}
 	}
 
 	collisionExists(dx, dz) {
@@ -75,7 +93,6 @@ class Interaction_Controller {
 
 		let type = this.ground.getType(z);
 		if (type == 'water') {
-			this.scene.gameOver();
 			return true;
 		}
 		return false;
