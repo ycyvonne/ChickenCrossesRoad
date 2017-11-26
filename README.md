@@ -33,8 +33,37 @@ Various components such as the car are hierarchal, with the car body, then the c
 
 The custom shape I created was a pyramid, used for rocks. You can view this under `vendor/dependencies`.
 ```
-class Pyramid extends Shape {
-	/* custom code */
+class Pyramid extends Shape
+{
+  constructor()
+    { super();
+      this.positions      = [
+        Vec.of(1,0,0), Vec.of(0,0,1), Vec.of(0,0,-1),
+        Vec.of(1,0,0), Vec.of(0,0,1), Vec.of(0,0,-1) ,
+        Vec.of(-1,0,0), Vec.of(0,0,1), Vec.of(0,0,-1) ,
+        Vec.of(0,1,0), Vec.of(1,0,0), Vec.of(0,0,-1) ,
+        Vec.of(0,1,0), Vec.of(0,0,-1), Vec.of(-1,0,0) ,
+        Vec.of(0,1,0), Vec.of(-1,0,0), Vec.of(0,0,1) ,
+        Vec.of(0,1,0), Vec.of(0,0,1), Vec.of(1,0,0)
+      ]; 
+      this.normals        = [
+        Vec.of(0,-1,0), Vec.of(0,-1,0), Vec.of(0,-1,0) ,            
+        Vec.of(0,-1,0), Vec.of(0,-1,0), Vec.of(0,-1,0) , 
+        Vec.of(1, 1, -1), Vec.of(1, 1, -1), Vec.of(1, 1, -1) ,          
+        Vec.of(-1, 1, -1), Vec.of(-1, 1, -1), Vec.of(-1, 1, -1) ,        
+        Vec.of(-1, 1, 1), Vec.of(-1, 1, 1), Vec.of(-1, 1, 1) ,
+        Vec.of(1, 1, 1), Vec.of(1, 1, 1), Vec.of(1, 1, 1)
+      ];  
+      this.texture_coords = [
+        Vec.of(0,0,0), Vec.of(1,0,0), Vec.of(0,1,0) ,   
+        Vec.of(0,0,0), Vec.of(1,0,0), Vec.of(0,1,0) ,   
+        Vec.of(0,0,0), Vec.of(1,0,0), Vec.of(0,1,0) ,    
+        Vec.of(0,0,0), Vec.of(1,0,0), Vec.of(0,1,0) , 
+        Vec.of(0,0,0), Vec.of(1,0,0), Vec.of(0,1,0) ,
+        Vec.of(0,0,0), Vec.of(1,0,0), Vec.of(0,1,0)
+      ];
+      this.indices = [ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+    }
 }
 ```
 
