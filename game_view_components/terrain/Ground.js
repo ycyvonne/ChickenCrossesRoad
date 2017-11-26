@@ -17,6 +17,11 @@ class Ground {
 		this.addStrip('start');
 		this.addStrip('start');
 		this.addStrip('start');
+		this.addStrip('grass');
+		this.addStrip('grass');
+		this.addStrip('grass');
+		this.addStrip('grass');
+		this.addStrip('water');
 	}
 
 	draw(time) {

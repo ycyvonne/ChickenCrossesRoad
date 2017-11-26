@@ -6,9 +6,44 @@
   <script type="text/javascript" src="load.js"></script>
 </head>
 <body>
+<div class="wrapper">
+	<div class="score">0</div>
+	<div class="instructions">
+		<div class="line">
+			<span class="letter" id="W">W</span>
+		</div>
+		<div class="line">
+			<span class="letter" id="A">A</span>
+			<span class="letter" id="S">S</span>
+			<span class="letter" id="D">D</span>
+		</div>
+	</div>
+</div>
 <div id="canvases"></div>
 <table id="control_buttons" class="dropdown">
   <tr></tr>
 </table>
+<script>
+	document.addEventListener('keydown', e => {
+		let keynum;
+	    if(window.event) { // IE                    
+	      keynum = e.keyCode;
+	    } else if(e.which){ // Netscape/Firefox/Opera                   
+	      keynum = e.which;
+	    }
+	    let pressedKey = String.fromCharCode(keynum);
+	    
+	    if (pressedKey == 'W' || pressedKey == 'A' || pressedKey == 'S' || pressedKey == 'D') {
+	    	document.querySelector('#' + pressedKey).classList.add('pressed')
+	    }
+
+	});
+
+	document.addEventListener('keyup', function() {
+		document.querySelectorAll('.letter').forEach(ele => {
+			ele.classList.remove('pressed')
+		});
+	});
+</script>
 </body>
 </html>

@@ -137,6 +137,7 @@ class Player extends Basic_Component {
 
 		if (!this.interaction.collisionExists(0,1)) {
 			this.curZ += this.step;
+			this.interaction.incrementScore();
 		}
 	}
 
@@ -150,6 +151,7 @@ class Player extends Basic_Component {
 
 		if (!this.interaction.collisionExists(0,-1)) {
 			this.curZ -= this.step;
+			this.interaction.decrementScore();
 		}
 	}
 

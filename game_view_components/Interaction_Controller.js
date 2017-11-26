@@ -4,6 +4,8 @@ class Interaction_Controller {
 		this.scene = scene;
 		this.player = player;
 		this.ground = ground;
+		this.highestScore = 0;
+		this.currentScore = 0;
 
 		this.collisionDelta = 0.2;
 		this.player.addInteraction(this);
@@ -17,14 +19,30 @@ class Interaction_Controller {
 		}
 	}
 
+	decrementScore() {
+		this.currentScore--;
+	}
+
+	incrementScore() {
+		this.currentScore++;
+		if (this.currentScore > this.highestScore) {
+			this.highestScore = this.currentScore;
+			document.querySelector('.score').innerHTML = this.highestScore;
+
+			if (this.highestScore >= 5) {
+				document.querySelector('.instructions').classList.add('hide');
+			}
+		}
+	}
+
 	gameOver() {
 		console.log('game over')
-		// document.removeEventListener('keydown');
 	}
 
 	collisionExists(dx, dz) {
 		let newX = this.playerCoord.x + dx;
 		let newZ = this.playerCoord.z + dz;
+
 		if (newZ < 0 || Math.abs(newX) > (this.ground.l - 1) / 2) {
 			return true;
 		}

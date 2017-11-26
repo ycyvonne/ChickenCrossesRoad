@@ -3,3 +3,50 @@
     align-items: center;
     justify-content: center;
 }
+
+.wrapper {
+	width: 800px;
+    position: absolute;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    		transform: translateX(-50%);
+}
+
+.score {
+    display: inline-block;
+    float: right;
+    padding: 10px;
+    background: white;
+    border: 10px solid #dede51;
+    font-family: monospace;
+    font-size: 30px;
+}
+
+.hide {
+	opacity:0;
+}
+
+.instructions {
+	margin-top: 350px;
+	transition: opacity 0.5s ease;
+}
+
+.line {
+	display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.letter {
+	font-family: monospace;
+    font-size: 30px;
+    border: 10px solid #dede51;
+    background: white;
+    padding: 10px;
+    margin: 10px;
+}
+
+.letter.pressed {
+	border: 5px solid #dede51;
+    margin: 15px;
+}
