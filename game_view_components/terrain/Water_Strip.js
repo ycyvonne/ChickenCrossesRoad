@@ -5,6 +5,8 @@ class Water_Strip extends Ground_Strip {
 		this.w = 1;
 		this.h = 0.1;
 
+		this.initialDelay = this.getRandom(0, 1, 3);
+
 		this.material = context
         	.get_instance(Phong_Model)
         	.material(Color.of(0, 0, 0, 1), 1, 1, 1, 100, context.get_instance('/assets/water.png'));
@@ -19,10 +21,12 @@ class Water_Strip extends Ground_Strip {
 	}
 
 	drawLilyPad(graphics_state, model_transform, options) {
+
 		model_transform = model_transform
 								.times(this.translate(options.pos_x * 2, 0, 0))
 								.times(this.scale(1/Math.sqrt(2), 0.2, 1/Math.sqrt(2)))
 								.times(this.rotate(45 * Math.PI / 180, 0, 1, 0))
+								.times(this.rotate(20 * (Math.sin(options.time / 1000) * this.initialDelay) * Math.PI / 180, 0, 1, 0))
 		this.shapes.box.draw(graphics_state, model_transform, this.green);
 
 		this.stack.push(model_transform);
@@ -80,7 +84,8 @@ class Water_Strip extends Ground_Strip {
 
 	    for (let lily of this.lilyPads) {
 	    	this.drawLilyPad(graphics_state, model_transform, {
-		    	pos_x: lily.pos_x
+		    	pos_x: lily.pos_x,
+		    	time: time
 		    });
 	    }
 	    
