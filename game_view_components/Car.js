@@ -57,8 +57,8 @@ class Car extends Basic_Component {
 		super(context);
 		this.gs = gs;
 		this.stack = stack;
-		this.translateX = 0;
 		this.roadOffset = 25;
+		this.translateX = -this.roadOffset;
 		this.street = street;
 
 		this.speed = this.getRandom(5, 8, 0);
