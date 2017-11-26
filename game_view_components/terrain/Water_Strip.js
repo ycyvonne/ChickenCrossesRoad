@@ -7,9 +7,10 @@ class Water_Strip extends Ground_Strip {
 
 		this.initialDelay = this.getRandom(0, 1, 3);
 
-		this.material = context
-        	.get_instance(Phong_Model)
-        	.material(Color.of(0, 0, 0, 1), 1, 1, 1, 100, context.get_instance('/assets/water.png'));
+		// this.material = context
+  //       	.get_instance(Phong_Model)
+  //       	.material(Color.of(0, 0, 0, 1), 1, 1, 1, 100, context.get_instance('/assets/water.png'));
+        this.material = this.blue;
 	}
 
 	get safety() {
