@@ -27,7 +27,7 @@ load('game_view_components/Interaction_Controller.js');
  * Main Scene
  ***********************************/
 
-class Main_Scene extends Simulation {
+class Main_Scene extends Scene_Component {
 
   translate(x, y, z) {
     return Mat4.translation(Vec.of(x, y, z));

@@ -144,7 +144,7 @@ class Surfaces_Demo extends Scene_Component
       this.submit_shapes( context, shapes );
       Object.assign( context.globals.graphics_state, { camera_transform: Mat4.translation([ -2,2,-15 ]), projection_transform: Mat4.perspective( Math.PI/4, context.width/context.height, .1, 1000 ) } );
       Object.assign( this, { shader: context.get_instance( Fake_Bump_Map ), textures: [], gallery: false, patch_only: false, revolution_only: false } );
-      for( let filename of [ "/assets/rgb.jpg", "/assets/stars.png", "/assets/earth.gif", "/assets/text.png" ] ) this.textures.push( context.get_instance( filename ) ); this.textures.push( undefined );
+      for( let filename of [ "assets/rgb.jpg", "assets/stars.png", "assets/earth.gif", "assets/text.png" ] ) this.textures.push( context.get_instance( filename ) ); this.textures.push( undefined );
     }
   display( graphics_state )
     { 

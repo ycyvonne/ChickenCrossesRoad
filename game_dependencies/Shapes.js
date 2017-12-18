@@ -1,4 +1,10 @@
+let cached_shapes = null;
+
 function getShapes() {
+  
+  if( cached_shapes ) return cached_shapes;
+  
+  
   let square_array = Vec.cast( [ 1,0,-1 ], [ 0,1,-1 ], [ -1,0,-1 ], [ 0,-1,-1 ], [ 1,0,-1 ] ),               // Some helper arrays of points located along
           star_array = Array(19).fill( Vec.of( 1,0,-1 ) ), circle_array = Array(40).fill( Vec.of( 1,0,-1 ) );  // curves.  We'll extrude these into surfaces.
 
@@ -39,5 +45,7 @@ function getShapes() {
       swept_curve : new Surface_Of_Revolution( 10, 10, [ ...Vec.cast( [2, 0, -1], [1, 0, 0], [1, 0, 1], [0, 0, 2] ) ], [ [ 0, 1 ], [ 0, 7 ] ], Math.PI/3 ),
       pyramid     : new Pyramid()
     };
+    
+  cached_shapes = shapes;
   return shapes;
 }
