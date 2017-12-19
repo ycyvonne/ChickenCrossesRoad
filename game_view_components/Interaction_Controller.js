@@ -57,6 +57,13 @@ class Interaction_Controller {
 		}
 	}
 
+	generateGround() {
+		const stagger = 10;
+		if (this.highestScore % stagger == 0 && this.ground.tryToGenerateMore(stagger)) {
+			this.ground.addInteraction(this);
+		}
+	}
+
 	collisionExists(dx, dz) {
 		let newX = this.playerCoord.x + dx;
 		let newZ = this.playerCoord.z + dz;
@@ -66,6 +73,8 @@ class Interaction_Controller {
 		}
 
 		let obstacles = this.ground.getStripObstacles(newZ);
+		console.log('obstacles', obstacles)
+		console.log('z', newZ)
 		for (let obstacle of obstacles) {
 			if (Math.abs(obstacle - newX) < this.collisionDelta) {
 				return true;

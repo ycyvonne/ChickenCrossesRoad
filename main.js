@@ -83,17 +83,17 @@ class Main_Scene extends Scene_Component {
     this.player = new Player(this.context, graphics_state, model_transform, this.stack);
 
     
-    this.ground.addStrip('grass');
-    this.ground.addStrip('grass');
-    this.ground.addStrip('street');
-    this.ground.addStrip('grass');
-    this.ground.addStrip('grass');
-    this.ground.addStrip('street');
-    this.ground.addStrip('street');
-    this.ground.addStrip('street');
-    this.ground.addStrip('grass');
-    this.ground.addStrip('grass');
-    this.ground.addStrip('grass');
+    // this.ground.addStrip('grass');
+    // this.ground.addStrip('grass');
+    // this.ground.addStrip('street');
+    // this.ground.addStrip('grass');
+    // this.ground.addStrip('grass');
+    // this.ground.addStrip('street');
+    // this.ground.addStrip('street');
+    // this.ground.addStrip('street');
+    // this.ground.addStrip('grass');
+    // this.ground.addStrip('grass');
+    // this.ground.addStrip('grass');
     
 
     this.interaction = new Interaction_Controller(this, this.player, this.ground);

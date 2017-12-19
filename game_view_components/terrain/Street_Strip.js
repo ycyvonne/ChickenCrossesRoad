@@ -42,7 +42,7 @@ class Street_Strip extends Ground_Strip {
 		model_transform = model_transform.times(this.translate(0,0,this.id * -2));
 
 		this.cars.draw(model_transform, time);
-
+		
 		// draw street lines
 		model_transform = model_transform.times(this.translate(0, 0.1, -2));
 		for (let x of [-16, -8, 0, 8, 16]) {

@@ -11,6 +11,7 @@ class Ground_Strip extends Basic_Component {
 		this.o = [];
 		this.d = [];
 		this.s = [];
+		this.interaction = null;
 	}
 
 	get obstacles() {

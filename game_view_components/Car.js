@@ -19,7 +19,6 @@ class Cars {
 
 	draw(model_transform, time) {
 		let carOffScreenIndex = -1;
-
 		for (const [index, car] of this.cars.entries()) {
 			if (car.offScreen()) {
 				carOffScreenIndex = index;
@@ -70,8 +69,8 @@ class Car extends Basic_Component {
 	}
 
 	get dangers(){
-		let min = this.translateX - 3.5;
-		let max = this.translateX + 3.5;
+		let min = this.translateX - 1.5; //back
+		let max = this.translateX + 2.5;
 		let increment = 0.2;
 		let d = [];
 
