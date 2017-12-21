@@ -47,6 +47,7 @@ class Main_Scene extends Scene_Component {
     this.submit_shapes(context, getShapes())
     this.context = context;
     this.initDisplay = false;
+    this.playerMovementDisabled = false;
     this.stack = new Graphics_Stack();
 
     Object.assign(
@@ -132,12 +133,32 @@ class Main_Scene extends Scene_Component {
     this.update_objects();
   }
 
+  disableGame() {
+    this.playerMovementDisabled = true;
+  }
+
+  enableGame() {
+    this.playerMovementDisabled = false;
+    document.querySelector('.game-over').classList.remove('show');
+  }
+
   /*
    * This function of a scene sets up its keyboard shortcuts.
    */
   make_control_panel() {
 
+    document.querySelector('.reset').addEventListener('click', () => {
+      this.enableGame();
+    });
+
+    document.addEventListener('keyup', () => {
+      document.querySelectorAll('.letter').forEach(ele => {
+        ele.classList.remove('pressed')
+      });
+    });
+
     document.addEventListener('keydown', e => {
+
       let keynum;
         if(window.event) { // IE                    
           keynum = e.keyCode;
@@ -147,28 +168,31 @@ class Main_Scene extends Scene_Component {
         let pressedKey = String.fromCharCode(keynum);
         let didPressMovementKey = false;
 
-        switch(pressedKey) {
-          case 'W':
-            this.player.goForward(this.t);
-            didPressMovementKey = true;
-            break;
-          case 'S':
-            this.player.goBackward(this.t);
-            didPressMovementKey = true;
-            break;
-          case 'D':
-            this.player.goRight(this.t);
-            didPressMovementKey = true;
-            break;
-          case 'A':
-            this.player.goLeft(this.t);
-            didPressMovementKey = true;
-            break;
-        }
+        if (!this.playerMovementDisabled) {
+          switch(pressedKey) {
+            case 'W':
+              this.player.goForward(this.t);
+              didPressMovementKey = true;
+              break;
+            case 'S':
+              this.player.goBackward(this.t);
+              didPressMovementKey = true;
+              break;
+            case 'D':
+              this.player.goRight(this.t);
+              didPressMovementKey = true;
+              break;
+            case 'A':
+              this.player.goLeft(this.t);
+              didPressMovementKey = true;
+              break;
+          }
 
-        if (didPressMovementKey) {
-          document.querySelector('#' + pressedKey).classList.add('pressed');
+          if (didPressMovementKey) {
+            document.querySelector('#' + pressedKey).classList.add('pressed');
+          }
         }
+        
     });
 
   }

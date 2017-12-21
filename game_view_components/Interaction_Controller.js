@@ -44,6 +44,7 @@ class Interaction_Controller {
 		if (!this.gameIsOver) {
 
 			this.gameIsOver = true;
+			this.scene.disableGame();
 
 			setTimeout(() => {
 				document.querySelector('.game-over').classList.add('show');
