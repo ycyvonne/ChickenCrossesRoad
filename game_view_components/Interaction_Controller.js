@@ -69,12 +69,12 @@ class Interaction_Controller {
 		let newZ = this.playerCoord.z + dz;
 
 		if (newZ < 0 || Math.abs(newX) > (this.ground.l - 1) / 2) {
-			return true;
+			return true;g
 		}
 
 		let obstacles = this.ground.getStripObstacles(newZ);
-		console.log('obstacles', obstacles)
-		console.log('z', newZ)
+		// console.log('obstacles', obstacles)
+		// console.log('z', newZ)
 		for (let obstacle of obstacles) {
 			if (Math.abs(obstacle - newX) < this.collisionDelta) {
 				return true;

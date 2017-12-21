@@ -81,21 +81,6 @@ class Main_Scene extends Scene_Component {
     
     this.ground = new Ground(this.context, graphics_state, model_transform, this.stack);
     this.player = new Player(this.context, graphics_state, model_transform, this.stack);
-
-    
-    // this.ground.addStrip('grass');
-    // this.ground.addStrip('grass');
-    // this.ground.addStrip('street');
-    // this.ground.addStrip('grass');
-    // this.ground.addStrip('grass');
-    // this.ground.addStrip('street');
-    // this.ground.addStrip('street');
-    // this.ground.addStrip('street');
-    // this.ground.addStrip('grass');
-    // this.ground.addStrip('grass');
-    // this.ground.addStrip('grass');
-    
-
     this.interaction = new Interaction_Controller(this, this.player, this.ground);
   }
 
@@ -178,24 +163,3 @@ class Main_Scene extends Scene_Component {
   }
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

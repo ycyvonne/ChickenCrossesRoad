@@ -59,98 +59,6 @@ class Square extends Shape      // A square, demonstrating shared vertices.  On 
     }
 }
 
-  // *********** TETRAHEDRON ***********
-class Tetrahedron extends Shape            // A demo of flat vs smooth shading (a boolean argument selects which one). Also our first 3D, non-planar shape.
-{ constructor( using_flat_shading ) 
-    { super();
-      var a = 1/Math.sqrt(3);
-      if( !using_flat_shading )                                         // Method 1:  A tetrahedron with shared vertices.  Compact, performs better,
-      {                                                                 // but can't produce flat shading or discontinuous seams in textures.
-          this.positions     .push( ...Vec.cast( [ 0, 0, 0], [1,0,0], [0,1,0], [0,0,1] ) );          
-          this.normals       .push( ...Vec.cast( [-a,-a,-a], [1,0,0], [0,1,0], [0,0,1] ) );          
-          this.texture_coords.push( ...Vec.cast( [ 0, 0   ], [1,0  ], [0,1, ], [1,1  ] ) );
-          this.indices       .push( 0, 1, 2,   0, 1, 3,   0, 2, 3,    1, 2, 3 );  // Vertices are shared multiple times with this method.
-      }
-      else
-      { this.positions     .push( ...Vec.cast( [0,0,0], [1,0,0], [0,1,0],         // Method 2:  A tetrahedron with 
-                                               [0,0,0], [1,0,0], [0,0,1],         // four independent triangles.
-                                               [0,0,0], [0,1,0], [0,0,1],
-                                               [0,0,1], [1,0,0], [0,1,0] ) );
-
-        this.normals       .push( ...Vec.cast( [0,0,-1], [0,0,-1], [0,0,-1],        // This here makes Method 2 flat shaded, since values of
-                                               [0,-1,0], [0,-1,0], [0,-1,0],        // normal vectors can be constant per whole triangle.
-                                               [-1,0,0], [-1,0,0], [-1,0,0],        // Repeat them for all three vertices.
-                                               [ a,a,a], [ a,a,a], [ a,a,a] ) );
-
-        this.texture_coords.push( ...Vec.cast( [0,0], [1,0], [1,0],      // Each face in Method 2 also gets its own set of texture coords
-                                               [0,0], [1,0], [1,0],      //(half the image is mapped onto each face).  We couldn't do this
-                                               [0,0], [1,0], [1,0],      // with shared vertices since this features abrupt transitions
-                                               [0,0], [1,0], [1,0] ) );  // when approaching the same point from different directions.
-
-        this.indices.push( 0, 1, 2,    3, 4, 5,    6, 7, 8,    9, 10, 11 );      // Notice all vertices are unique this time.
-      }
-    }
-}
-
-  // *********** WINDMILL ***********
-class Windmill extends Shape   // As our shapes get more complicated, we begin using matrices and flow
-{ constructor( num_blades )   // control (including loops) to generate non-trivial point clouds and connect them.
-    { super();
-      for( var i = 0; i < num_blades; i++ )     // A loop to automatically generate the triangles.
-        {
-            var spin = Mat4.rotation( i * 2*Math.PI/num_blades, Vec.of( 0, 1, 0 ) );            // Rotate around a few degrees in XZ plane to place each new point.
-            var newPoint  = spin.times( Vec.of( 1, 0, 0 ).to4(1) ).to3();   // Apply that XZ rotation matrix to point (1,0,0) of the base triangle.
-            this.positions.push( newPoint,                         // Store this XZ position.                  This is point 1.
-                                 newPoint.plus( [ 0, 1, 0 ] ),     // Store it again but with higher y coord:  This is point 2.
-                                 Vec.of( 0, 0, 0 )            );  // All triangles touch this location.       This is point 3.
-
-            // Rotate our base triangle's normal (0,0,1) to get the new one.  Careful!  Normal vectors are not points; their perpendicularity constraint
-            // gives them a mathematical quirk that when applying matrices you have to apply the transposed inverse of that matrix instead.  But right 
-            // now we've got a pure rotation matrix, where the inverse and transpose operations cancel out.
-            var newNormal = spin.times( Vec.of( 0, 0, 1 ).to4(0) ).to3();  
-            this.normals       .push( newNormal, newNormal, newNormal             );
-            this.texture_coords.push( ...Vec.cast( [ 0, 0 ], [ 0, 1 ], [ 1, 0 ] ) );
-            this.indices       .push( 3*i, 3*i + 1, 3*i + 2                       ); // Procedurally connect the three new vertices into triangles.
-        }
-    }
-}
-
-class Subdivision_Sphere extends Shape  // A subdivision surface ( see Wikipedia article ) is initially simple, then builds itself into a more and more detailed shape of the same
-{                                 // layout.  Each act of subdivision makes it a better approximation of some desired mathematical surface by projecting each new
-                                  // point onto that surface's known implicit equation.  For a sphere, we begin with a closed 3-simplex (a tetrahedron).  For 
-                                  // each face, connect the midpoints of each edge together to make more faces.  Repeat recursively until the desired level of 
-  constructor( max_subdivisions ) // detail is obtained.  Project all new vertices to unit vectors (onto the unit sphere) and group them into triangles by 
-    { super();                    // following the predictable pattern of the recursion.
-      this.positions.push( ...Vec.cast( [ 0, 0, -1 ], [ 0, .9428, .3333 ], [ -.8165, -.4714, .3333 ], [ .8165, -.4714, .3333 ] ) );  // Start with this equilateral tetrahedron
-      
-      this.subdivideTriangle( 0, 1, 2, max_subdivisions);  // Begin recursion.
-      this.subdivideTriangle( 3, 2, 1, max_subdivisions);
-      this.subdivideTriangle( 1, 0, 3, max_subdivisions);
-      this.subdivideTriangle( 0, 2, 3, max_subdivisions); 
-      
-      for( let p of this.positions )
-        { this.normals       .push( Vec.of( ...p ) );    // Each point has a normal vector that simply goes to the point from the origin.  Copy array by value.
-          this.texture_coords.push( Vec.of( .5 + Math.atan2( p[2], p[0] ) / 2 / Math.PI, .5 - 2 * Math.asin( p[1] ) / 2 / Math.PI ) ); }
-    }
-  subdivideTriangle( a, b, c, count )   // Recurse through each level of detail by splitting triangle (a,b,c) into four smaller ones.
-    { 
-      if( count <= 0) { this.indices.push(a,b,c); return; }  // Base case of recursion - we've hit the finest level of detail we want.
-                  
-      var ab_vert = this.positions[a].mix( this.positions[b], 0.5).normalized(),     // We're not at the base case.  So,
-          ac_vert = this.positions[a].mix( this.positions[c], 0.5).normalized(),     // build 3 new vertices at midpoints, and extrude them out to
-          bc_vert = this.positions[b].mix( this.positions[c], 0.5).normalized();     // touch the unit sphere (length 1).
-            
-      var ab = this.positions.push( ab_vert ) - 1,      // Here, push() returns the indices of the three new vertices (plus one).
-          ac = this.positions.push( ac_vert ) - 1,  
-          bc = this.positions.push( bc_vert ) - 1;  
-      
-      this.subdivideTriangle( a, ab, ac,  count - 1 );      // Recurse on four smaller triangles, and we're done.
-      this.subdivideTriangle( ab, b, bc,  count - 1 );      // Skipping every fourth vertex index in our list takes you down one level of detail, and 
-      this.subdivideTriangle( ac, bc, c,  count - 1 );      // so on, due to the way we're building it.
-      this.subdivideTriangle( ab, bc, ac, count - 1 );
-    }
-}
-
 class Cube extends Shape    // A cube inserts six square strips into its arrays.
 { constructor()  
     { super();
@@ -304,26 +212,26 @@ class Phong_Model extends Shader          // ******* THE DEFAULT SHADER: Phong R
     }
 }    
       
-class Funny_Shader extends Phong_Model    // Simple "procedural" texture shader without input image.  This borrows its vertex shader from Phong_Model.
-{ material() { return { shader: this } }  // Materials here are minimal, without settings.
-  update_GPU( g_state, model_transform, material, gpu = this.g_addrs, gl = this.gl )     // Send javascrpt's variables to the GPU to update its overall state.
-      { this.update_matrices( g_state, model_transform, gpu, gl );
-        gl.uniform1f ( gpu.animation_time_loc, g_state.animation_time / 1000 );
-        gpu.shader_attributes[2].enabled = true;
-      }
-  fragment_glsl_code()           // ********* FRAGMENT SHADER *********
-    { return `
-        void main()
-        { float a = animation_time, u = f_tex_coord.x, v = f_tex_coord.y;
+// class Funny_Shader extends Phong_Model    // Simple "procedural" texture shader without input image.  This borrows its vertex shader from Phong_Model.
+// { material() { return { shader: this } }  // Materials here are minimal, without settings.
+//   update_GPU( g_state, model_transform, material, gpu = this.g_addrs, gl = this.gl )     // Send javascrpt's variables to the GPU to update its overall state.
+//       { this.update_matrices( g_state, model_transform, gpu, gl );
+//         gl.uniform1f ( gpu.animation_time_loc, g_state.animation_time / 1000 );
+//         gpu.shader_attributes[2].enabled = true;
+//       }
+//   fragment_glsl_code()           // ********* FRAGMENT SHADER *********
+//     { return `
+//         void main()
+//         { float a = animation_time, u = f_tex_coord.x, v = f_tex_coord.y;
 
-          gl_FragColor = vec4(
-            2.0 * u * sin(17.0 * u ) + 3.0 * v * sin(11.0 * v ) + 1.0 * sin(13.0 * a),
-            3.0 * u * sin(18.0 * u ) + 4.0 * v * sin(12.0 * v ) + 2.0 * sin(14.0 * a),
-            4.0 * u * sin(19.0 * u ) + 5.0 * v * sin(13.0 * v ) + 3.0 * sin(15.0 * a),
-            5.0 * u * sin(20.0 * u ) + 6.0 * v * sin(14.0 * v ) + 4.0 * sin(16.0 * a));
-        }`;
-    }
-}
+//           gl_FragColor = vec4(
+//             2.0 * u * sin(17.0 * u ) + 3.0 * v * sin(11.0 * v ) + 1.0 * sin(13.0 * a),
+//             3.0 * u * sin(18.0 * u ) + 4.0 * v * sin(12.0 * v ) + 2.0 * sin(14.0 * a),
+//             4.0 * u * sin(19.0 * u ) + 5.0 * v * sin(13.0 * v ) + 3.0 * sin(15.0 * a),
+//             5.0 * u * sin(20.0 * u ) + 6.0 * v * sin(14.0 * v ) + 4.0 * sin(16.0 * a));
+//         }`;
+//     }
+// }
 
 class Movement_Controls extends Scene_Component    // A Scene_Component that our Canvas_Manager can manage.  Adds both first-person and third-person style camera matrix controls to the canvas.
 { constructor( context, canvas = context.canvas )
