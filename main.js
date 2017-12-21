@@ -137,28 +137,39 @@ class Main_Scene extends Scene_Component {
    */
   make_control_panel() {
 
-    this.live_string(() => "Frame Rate (frames/s): "  + 1/this.dt);
-    this.new_line();
+    document.addEventListener('keydown', e => {
+      let keynum;
+        if(window.event) { // IE                    
+          keynum = e.keyCode;
+        } else if(e.which){ // Netscape/Firefox/Opera                   
+          keynum = e.which;
+        }
+        let pressedKey = String.fromCharCode(keynum);
+        let didPressMovementKey = false;
 
-    this.key_triggered_button("Go forward", "w", () => {
-      this.player.goForward(this.t);
-    }, "red");
-    this.new_line();
+        switch(pressedKey) {
+          case 'W':
+            this.player.goForward(this.t);
+            didPressMovementKey = true;
+            break;
+          case 'S':
+            this.player.goBackward(this.t);
+            didPressMovementKey = true;
+            break;
+          case 'D':
+            this.player.goRight(this.t);
+            didPressMovementKey = true;
+            break;
+          case 'A':
+            this.player.goLeft(this.t);
+            didPressMovementKey = true;
+            break;
+        }
 
-    this.key_triggered_button("Go backward", "s", () => {
-      this.player.goBackward(this.t);
-    }, "red");
-    this.new_line();
-
-    this.key_triggered_button("Go right", "d", () => {
-      this.player.goRight(this.t);
-    }, "red");
-    this.new_line();
-
-    this.key_triggered_button("Go left", "a", () => {
-      this.player.goLeft(this.t);
-    }, "red");
-    this.new_line();
+        if (didPressMovementKey) {
+          document.querySelector('#' + pressedKey).classList.add('pressed');
+        }
+    });
 
   }
 

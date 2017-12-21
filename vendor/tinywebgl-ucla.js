@@ -243,68 +243,68 @@ class Shape
     }
 }
 
-class Keyboard_Manager       // Compact and fixed version of shortcut.js keyboard library on Github; go there for full documentation.
-{ constructor() { this.all_shortcuts = {}; this.paused = false; }
-  add( shortcut_combination, callback, opt )
-    { var default_options = { 'type':'keydown', 'propagate':false, 'disable_in_input':true, 'target':document, 'keycode':false }
-      if(!opt) opt = default_options;
-      else     for(var dfo in default_options) if( typeof opt[dfo] == 'undefined' ) opt[dfo] = default_options[dfo];
-      var ele = opt.target == 'string' ? document.getElementById(opt.target) : opt.target;
-      shortcut_combination = shortcut_combination.toLowerCase();
-      var onkeypress = ( function(e) // On each keypress, this gets called [# of bound keys] times
-        { if( this.paused ) return;
-          e = e || window.event;
-          if( opt['disable_in_input'] )
-          { var element = e.target || e.srcElement || element.parentNode;
-            if( element.nodeType == 3 ) element = element.parentNode;
-            if( element.tagName == 'INPUT' || element.tagName == 'TEXTAREA' ) return;
-          }
-          var code = e.keyCode || e.which, character = code == 188 ? "," : ( code == 190 ? "." : String.fromCharCode(code).toLowerCase() );
-          var keycombo = shortcut_combination.split("+"), num_pressed = 0;
-          var special_keys = {'esc':27,   'escape':27, 'tab':9,     'space':32, 'return' :13, 'enter':13, 'backspace':8,
-                              'pause':19, 'break':19,  'insert':45, 'home':36,  'delete':46,  'end':35,   'page_up':33, 'page_down':34,
-                              'left':37,   'up':38,    'right':39,  'down':40,
-                              'f1':112,'f2':113,'f3':114,'f4':115,'f5':116,'f6':117,'f7':118,'f8':119,'f9':120,'f10':121,'f11':122,'f12':123 }
-          var modifiers = { shift: { wanted: false, pressed: e.shiftKey },
-                            ctrl : { wanted: false, pressed: e.ctrlKey  },
-                            alt  : { wanted: false, pressed: e.altKey   },
-                            meta : { wanted: false, pressed: e.metaKey  } }; // ( Mac specific )
-          for( let k of keycombo )                                    // Check if current keycombo in consideration matches the actual keypress
-          { modifiers.ctrl .wanted |= ( k == 'ctrl' || k == 'control' && ++num_pressed );
-            modifiers.shift.wanted |= ( k == 'shift'                  && ++num_pressed );
-            modifiers.alt  .wanted |= ( k == 'alt'                    && ++num_pressed );
-            modifiers.meta .wanted |= ( k == 'meta'                   && ++num_pressed );
-            var shift_nums = {"`":"~","1":"!","2":"@","3":"#","4":"$" ,"5":"%","6":"^","7":"&", "8":"*","9":"(",
-                              "0":")","-":"_","=":"+",";":":","'":"\"",",":"<",".":">","/":"?","\\":"|" }
-            if     ( k.length > 1   && special_keys[k] == code ) num_pressed++;
-            else if( opt['keycode'] && opt['keycode']  == code ) num_pressed++;
-            else if( character == k ) num_pressed++; //The special keys did not match
-            else if( shift_nums[character] && e.shiftKey ) { character = shift_nums[character]; if(character == k) num_pressed++;   }
-          }
-          if( num_pressed == keycombo.length && modifiers.ctrl .pressed == modifiers.ctrl .wanted
-                                             && modifiers.shift.pressed == modifiers.shift.wanted
-                                             && modifiers.alt  .pressed == modifiers.alt  .wanted
-                                             && modifiers.meta .pressed == modifiers.meta .wanted )
-            { callback( e );          // *** Fire off the function that matched the pressed keys ***********************************
-              if(!opt['propagate'])  { e.cancelBubble = true;  e.returnValue = false; if (e.stopPropagation) { e.stopPropagation(); e.preventDefault(); } return; }
-            }
-        } ).bind( this );
-      this.all_shortcuts[ shortcut_combination ] = { 'callback':onkeypress, 'target':ele, 'event': opt['type'] };
-      if     ( ele.addEventListener ) ele.addEventListener(opt['type'],   onkeypress, false);
-      else if( ele.attachEvent )      ele.attachEvent('on'+opt['type'],   onkeypress);
-      else                            ele[            'on'+opt['type']] = onkeypress;
-    }
-  remove(shortcut_combination)       // Just specify the shortcut and this will remove the binding
-    { shortcut_combination = shortcut_combination.toLowerCase();
-      var binding = this.all_shortcuts[shortcut_combination];
-      delete(       this.all_shortcuts[shortcut_combination] )
-      if( !binding ) return;
-      var type = binding[ 'event' ], ele = binding[ 'target' ], callback = binding[ 'callback' ];
-      if(ele.detachEvent) ele.detachEvent('on'+type, callback);
-      else if(ele.removeEventListener) ele.removeEventListener(type, callback, false);
-      else ele['on'+type] = false;
-    }
-}
+// class Keyboard_Manager       // Compact and fixed version of shortcut.js keyboard library on Github; go there for full documentation.
+// { constructor() { this.all_shortcuts = {}; this.paused = false; }
+//   add( shortcut_combination, callback, opt )
+//     { var default_options = { 'type':'keydown', 'propagate':false, 'disable_in_input':true, 'target':document, 'keycode':false }
+//       if(!opt) opt = default_options;
+//       else     for(var dfo in default_options) if( typeof opt[dfo] == 'undefined' ) opt[dfo] = default_options[dfo];
+//       var ele = opt.target == 'string' ? document.getElementById(opt.target) : opt.target;
+//       shortcut_combination = shortcut_combination.toLowerCase();
+//       var onkeypress = ( function(e) // On each keypress, this gets called [# of bound keys] times
+//         { if( this.paused ) return;
+//           e = e || window.event;
+//           if( opt['disable_in_input'] )
+//           { var element = e.target || e.srcElement || element.parentNode;
+//             if( element.nodeType == 3 ) element = element.parentNode;
+//             if( element.tagName == 'INPUT' || element.tagName == 'TEXTAREA' ) return;
+//           }
+//           var code = e.keyCode || e.which, character = code == 188 ? "," : ( code == 190 ? "." : String.fromCharCode(code).toLowerCase() );
+//           var keycombo = shortcut_combination.split("+"), num_pressed = 0;
+//           var special_keys = {'esc':27,   'escape':27, 'tab':9,     'space':32, 'return' :13, 'enter':13, 'backspace':8,
+//                               'pause':19, 'break':19,  'insert':45, 'home':36,  'delete':46,  'end':35,   'page_up':33, 'page_down':34,
+//                               'left':37,   'up':38,    'right':39,  'down':40,
+//                               'f1':112,'f2':113,'f3':114,'f4':115,'f5':116,'f6':117,'f7':118,'f8':119,'f9':120,'f10':121,'f11':122,'f12':123 }
+//           var modifiers = { shift: { wanted: false, pressed: e.shiftKey },
+//                             ctrl : { wanted: false, pressed: e.ctrlKey  },
+//                             alt  : { wanted: false, pressed: e.altKey   },
+//                             meta : { wanted: false, pressed: e.metaKey  } }; // ( Mac specific )
+//           for( let k of keycombo )                                    // Check if current keycombo in consideration matches the actual keypress
+//           { modifiers.ctrl .wanted |= ( k == 'ctrl' || k == 'control' && ++num_pressed );
+//             modifiers.shift.wanted |= ( k == 'shift'                  && ++num_pressed );
+//             modifiers.alt  .wanted |= ( k == 'alt'                    && ++num_pressed );
+//             modifiers.meta .wanted |= ( k == 'meta'                   && ++num_pressed );
+//             var shift_nums = {"`":"~","1":"!","2":"@","3":"#","4":"$" ,"5":"%","6":"^","7":"&", "8":"*","9":"(",
+//                               "0":")","-":"_","=":"+",";":":","'":"\"",",":"<",".":">","/":"?","\\":"|" }
+//             if     ( k.length > 1   && special_keys[k] == code ) num_pressed++;
+//             else if( opt['keycode'] && opt['keycode']  == code ) num_pressed++;
+//             else if( character == k ) num_pressed++; //The special keys did not match
+//             else if( shift_nums[character] && e.shiftKey ) { character = shift_nums[character]; if(character == k) num_pressed++;   }
+//           }
+//           if( num_pressed == keycombo.length && modifiers.ctrl .pressed == modifiers.ctrl .wanted
+//                                              && modifiers.shift.pressed == modifiers.shift.wanted
+//                                              && modifiers.alt  .pressed == modifiers.alt  .wanted
+//                                              && modifiers.meta .pressed == modifiers.meta .wanted )
+//             { callback( e );          // *** Fire off the function that matched the pressed keys ***********************************
+//               if(!opt['propagate'])  { e.cancelBubble = true;  e.returnValue = false; if (e.stopPropagation) { e.stopPropagation(); e.preventDefault(); } return; }
+//             }
+//         } ).bind( this );
+//       this.all_shortcuts[ shortcut_combination ] = { 'callback':onkeypress, 'target':ele, 'event': opt['type'] };
+//       if     ( ele.addEventListener ) ele.addEventListener(opt['type'],   onkeypress, false);
+//       else if( ele.attachEvent )      ele.attachEvent('on'+opt['type'],   onkeypress);
+//       else                            ele[            'on'+opt['type']] = onkeypress;
+//     }
+//   remove(shortcut_combination)       // Just specify the shortcut and this will remove the binding
+//     { shortcut_combination = shortcut_combination.toLowerCase();
+//       var binding = this.all_shortcuts[shortcut_combination];
+//       delete(       this.all_shortcuts[shortcut_combination] )
+//       if( !binding ) return;
+//       var type = binding[ 'event' ], ele = binding[ 'target' ], callback = binding[ 'callback' ];
+//       if(ele.detachEvent) ele.detachEvent('on'+type, callback);
+//       else if(ele.removeEventListener) ele.removeEventListener(type, callback, false);
+//       else ele['on'+type] = false;
+//     }
+// }
 
 class Graphics_State                                                     // Stores things that affect multiple shapes, such as lights and the camera.
 { constructor( camera_transform = Mat4.identity(), projection_transform = Mat4.identity() ) 
@@ -428,7 +428,7 @@ class Canvas_Manager                                 // This class manages a who
 
 class Scene_Component           // Scene_Component Superclass -- The base class for any scene part or code snippet that we can add to a canvas.
 { constructor( context )        // Register it with your Canvas_Manager, and override its display() and make_control_panel() functions to make it do something.
-    { Object.assign( this, { controls: new Keyboard_Manager(), control_panel: document.createElement( "td" ), globals: context.globals } );
+    { Object.assign( this, { /*controls: new Keyboard_Manager(), */control_panel: document.createElement( "td" ), globals: context.globals } );
       this.control_panel.textContent = this.constructor.name; this.new_line();    
       document.getElementById( "control_buttons" ).rows[0].appendChild( this.control_panel );
     }

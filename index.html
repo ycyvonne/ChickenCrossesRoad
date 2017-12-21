@@ -30,21 +30,6 @@
 </table>
 <script>
 	
-	document.addEventListener('keydown', e => {
-		let keynum;
-	    if(window.event) { // IE                    
-	      keynum = e.keyCode;
-	    } else if(e.which){ // Netscape/Firefox/Opera                   
-	      keynum = e.which;
-	    }
-	    let pressedKey = String.fromCharCode(keynum);
-	    
-	    if (pressedKey == 'W' || pressedKey == 'A' || pressedKey == 'S' || pressedKey == 'D') {
-	    	document.querySelector('#' + pressedKey).classList.add('pressed')
-	    }
-
-	});
-
 	document.addEventListener('keyup', () => {
 		document.querySelectorAll('.letter').forEach(ele => {
 			ele.classList.remove('pressed')
